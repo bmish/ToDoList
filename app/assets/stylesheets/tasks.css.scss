@@ -1,0 +1,24 @@
+// Place all the styles related to the tasks controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#pageContent {
+	width:600px;
+	margin:0 auto;
+	text-align:left;
+}
+
+#pageTitle
+{
+	text-align: center;
+}
+
+
+.taskRow
+{
+	padding:5px;
+}
+
+table {
+	border-spacing: 10px 1px;
+}

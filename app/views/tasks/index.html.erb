@@ -1,0 +1,34 @@
+<div id="pageContent">
+	<div id="pageTitle"><h1>Tasks</h1></div>
+	
+	<%= render 'form' %> 
+
+	<br>
+	
+	<table>
+	  <tr>
+		<th></th>
+	    <th>Title</th>
+	    <th>Category</th>
+		<th>Priority</th>
+		<th>Notes</th>
+		<th></th>
+		<th></th>
+	  </tr>
+ 
+	  <% @tasks.each do |task| %>
+		<tr>
+			<td colspan="7"><hr /></td>
+		</tr>
+	    <tr class="taskRow">
+	      <td><%= check_box("completed", task.id, {checked: task.done}) %></td>
+	      <td><%= task.title %></td>
+		  <td><%= Category.find(task.category_id).title %></td>
+		  <td><%= task.priority %></td>
+	      <td><%= task.notes %></td>
+		  <td><%= link_to 'Edit', edit_task_path(task) %></td>
+		  <td><%= link_to 'X', task_path(task), method: :delete, data: {confirm: 'Are you sure?'}%></td>
+	    </tr>
+	  <% end %>
+	</table>
+</div>
