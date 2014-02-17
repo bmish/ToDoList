@@ -30,5 +30,11 @@
 		  <td><%= link_to 'X', task_path(task), method: :delete, data: {confirm: 'Are you sure?'}%></td>
 	    </tr>
 	  <% end %>
+	  
+	  <% if @tasks.empty? %>
+	  	<tr>
+			<td colspan="7">No tasks yet.</td>
+		</tr>
+	  <% end %>
 	</table>
 </div>
