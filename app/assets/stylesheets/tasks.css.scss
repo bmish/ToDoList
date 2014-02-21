@@ -3,22 +3,86 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 #pageContent {
+}
+
+#centerColumn{
 	width:600px;
 	margin:0 auto;
-	text-align:left;
+	margin-top:20px;
 }
 
-#pageTitle
-{
-	text-align: center;
+#listTitle{
+	background-color:rgb(238, 238, 238);
+	padding:10px;
 }
 
-
-.taskRow
-{
-	padding:5px;
+#listTitle h1{
+	font-size:24px;
+	font-weight:bold;
+	padding:0px;
+	margin:0px;
 }
 
-table {
-	border-spacing: 10px 1px;
+#listHeaders{
+	display:block;
+	
+	border-bottom-color:rgb(238, 238, 238);
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	
+	font-weight:bold;
+}
+
+#listItems{
+}
+
+.listItem{
+	display:block;
+	border-bottom-color:rgb(238, 238, 238);
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+}
+
+.listItemCheckbox{
+	width:5%;
+}
+
+.listItemTitle{
+	width:30%;
+}
+
+.listItemCategory{
+	width:20%;
+}
+
+.listItemPriority{
+	width:7%;
+}
+
+.listItemNotes{
+	width:23%;
+}
+
+.listItemEdit{
+	width:5%;
+}
+
+.listItemDelete{
+	width:5%;
+}
+
+.listItemSave{
+	width:10%;
+}
+
+.listItemColumn{
+	display:inline-block;
+	box-sizing:border-box;
+	padding:7px;
+	vertical-align:top;
+}
+
+#errorList{
+	margin-top:0px;
+	padding-top:5px;
 }

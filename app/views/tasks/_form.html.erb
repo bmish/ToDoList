@@ -1,21 +1,21 @@
-<%= form_for :task, url: tasks_path do |f| %>
+<div id="listNew" class="listItem">
+	<%= form_for :task, url: tasks_path do |f| %>
+		<div class="listItemColumn listItemCheckbox"></div>
+		<div class="listItemColumn listItemTitle"><%= f.text_field :title, :placeholder => "Task", :autofocus => true %></div>
+		<div class="listItemColumn listItemCategory"><%= select("task", "category_id", Category.all.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %></div>
+		<div class="listItemColumn listItemPriority"><%= f.select :priority, options_for_select(["0", "1", "2", "3"], :disabled => "Priority", :selected => "3") %></div>
+		<div class="listItemColumn listItemNotes"><%= f.text_field :notes, :placeholder =>"Notes" %></div>
+		<div class="listItemColumn listItemSave"><%= f.submit "Save" %></div>
+		<!--<%= text_field_tag 'category_title_new', nil, placeholder: 'New category' %>-->
+	<% end %>
 
-<%= f.text_field :title, :placeholder => "Task", :autofocus => true %>
-<%= select("task", "category_id", Category.all.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %>
-<%= f.select :priority, options_for_select(["Priority", "0", "1", "2", "3"], :disabled => "Priority", :selected => "3") %>
-<%= f.text_field :notes, :placeholder =>"Notes" %>
-<%= f.submit %>
-
-<% end %>
-
-<% if @task && @task.errors.any? %>
-  <div id="error_explanation">
-    <p><%= pluralize(@task.errors.count, "error") %> prohibited
-      this task from being saved:</p>
-    <ul>
-    <% @task.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
-    <% end %>
-    </ul>
-  </div>
-<% end %>
+	<% if @task && @task.errors.any? %>
+	  <div id="errorSection">
+	    <ul id="errorList">
+		    <% @task.errors.full_messages.each do |msg| %>
+		      <li><%= msg %></li>
+		    <% end %>
+	    </ul>
+	  </div>
+	<% end %>
+</div>
