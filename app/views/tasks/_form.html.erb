@@ -1,11 +1,10 @@
 <div id="listNew" class="listItem">
 	<%= form_for :task, url: tasks_path do |f| %>
-		<div class="listItemColumn listItemCheckbox"></div>
-		<div class="listItemColumn listItemTitle"><%= f.text_field :title, :placeholder => "Task", :autofocus => true %></div>
-		<div class="listItemColumn listItemCategory"><%= select("task", "category_id", Category.all.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %></div>
-		<div class="listItemColumn listItemPriority"><%= f.select :priority, options_for_select(["0", "1", "2", "3"], :disabled => "Priority", :selected => "3") %></div>
-		<div class="listItemColumn listItemNotes"><%= f.text_field :notes, :placeholder =>"Notes" %></div>
-		<div class="listItemColumn listItemSave"><%= f.submit "Save" %></div>
+		<div class="listItemColumn listItemCheckbox"></div><!--
+		--><div id="divNewTitle" class="listItemColumn listItemTitle"><%= f.text_field :title, :placeholder => "Task", :autofocus => true %></div><!--
+		--><div id="divNewCategory" class="listItemColumn listItemCategory"><%= select("task", "category_id", Category.all.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %></div><!--
+		--><div id="divNewPriority" class="listItemColumn listItemPriority"><%= f.select :priority, options_for_select(["0", "1", "2", "3"], :disabled => "Priority", :selected => "3") %></div><!--
+		--><div id="divNewSave" class="listItemColumn listItemSave"><%= f.submit "+" %></div>
 		<!--<%= text_field_tag 'category_title_new', nil, placeholder: 'New category' %>-->
 	<% end %>
 

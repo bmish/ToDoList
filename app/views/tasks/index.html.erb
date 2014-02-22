@@ -4,26 +4,24 @@
 		
 		<div id="listItems">
 			<div id="listHeaders">
-				<div class="listItemColumn listItemCheckbox"></div>
-				<div class="listItemColumn listItemTitle">Title</div>
-				<div class="listItemColumn listItemCategory">Category</div>
-				<div class="listItemColumn listItemPriority">P</div>
-				<div class="listItemColumn listItemNotes">Notes</div>
-				<div class="listItemColumn listItemEdit"></div>
-				<div class="listItemColumn listItemDelete"></div>
+				<div class="listItemColumn listItemCheckbox"></div><!--
+				--><div class="listItemColumn listItemTitle">Title</div><!--
+				--><div class="listItemColumn listItemCategory">Category</div><!--
+				--><div class="listItemColumn listItemPriority">P</div><!--
+				--><div class="listItemColumn listItemEdit"></div><!--
+				--><div class="listItemColumn listItemDelete"></div>
 			</div>
  
  		   	<%= render 'form' %>
  
 		    <% @tasks.each do |task| %>
 			    <div class="listItem">
-			      <div class="listItemColumn listItemCheckbox"><%= check_box("completed", task.id, {checked: task.done}) %></div>
-			      <div class="listItemColumn listItemTitle"><%= task.title %></div>
-				  <div class="listItemColumn listItemCategory"><%= Category.find(task.category_id).title %></div>
-				  <div class="listItemColumn listItemPriority"><%= task.priority %></div>
-			      <div class="listItemColumn listItemNotes"><%= task.notes %></div>
-				  <div class="listItemColumn listItemEdit"><%= link_to 'E', edit_task_path(task) %></div>
-				  <div class="listItemColumn listItemDelete"><%= link_to 'X', task_path(task), method: :delete, data: {confirm: 'Are you sure?'}%></div>
+			      <div class="listItemColumn listItemCheckbox"><%= check_box("completed", task.id, {checked: task.done}) %></div><!--
+			      --><div class="listItemColumn listItemTitle"><%= task.title %></div><!--
+				  --><div class="listItemColumn listItemCategory"><%= Category.find(task.category_id).title %></div><!--
+				  --><div class="listItemColumn listItemPriority"><%= task.priority %></div><!--
+				  --><div class="listItemColumn listItemEdit"><%= link_to 'E', edit_task_path(task) %></div><!--
+				  --><div class="listItemColumn listItemDelete"><%= link_to 'X', task_path(task), method: :delete, data: {confirm: 'Are you sure?'}%></div>
 			  	</div>
 		    <% end %>
 		</div>

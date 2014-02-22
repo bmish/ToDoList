@@ -6,7 +6,7 @@
 }
 
 #centerColumn{
-	width:600px;
+	width:800px;
 	margin:0 auto;
 	margin-top:20px;
 }
@@ -44,42 +44,58 @@
 }
 
 .listItemCheckbox{
-	width:5%;
+	width:20px;
+	padding-top:7px;
 }
 
 .listItemTitle{
-	width:30%;
+	width:600px;
+	padding:7px;
 }
 
 .listItemCategory{
-	width:20%;
+	width:100px;
+	padding:7px;
 }
 
 .listItemPriority{
-	width:7%;
-}
-
-.listItemNotes{
-	width:23%;
+	width:50px;
+	padding:7px;
 }
 
 .listItemEdit{
-	width:5%;
+	width:15px;
+	padding-top:7px;
 }
 
 .listItemDelete{
-	width:5%;
+	width:15px;
+	padding-top:7px;
 }
 
 .listItemSave{
-	width:10%;
+	width:30px;
+	padding-top:7px;
 }
 
 .listItemColumn{
 	display:inline-block;
 	box-sizing:border-box;
-	padding:7px;
+	-moz-box-sizing:border-box;
 	vertical-align:top;
+}
+
+#divNewPriority{
+	padding-left:0px;
+	padding-right:0px;
+}
+
+#divNewSave{
+	padding-left:0px;
+}
+
+#task_title{
+	width:100%;
 }
 
 #errorList{
