@@ -2,13 +2,16 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#pageContent {
+body{
+	margin:0;
+}
+
+#pageContent{
 }
 
 #centerColumn{
-	width:800px;
+	width:100%;
 	margin:0 auto;
-	margin-top:20px;
 }
 
 #listTitle{
@@ -37,19 +40,18 @@
 }
 
 .listItem{
-	display:block;
 	border-bottom-color:rgb(238, 238, 238);
 	border-bottom-style:solid;
 	border-bottom-width:1px;
 }
 
 .listItemCheckbox{
-	width:20px;
+	width:25px;
 	padding-top:7px;
+	padding-left:10px;
 }
 
 .listItemTitle{
-	width:600px;
 	padding:7px;
 }
 
@@ -71,18 +73,25 @@
 .listItemDelete{
 	width:15px;
 	padding-top:7px;
+	padding-right:15px;
 }
 
 .listItemSave{
 	width:30px;
 	padding-top:7px;
+	padding-right:15px;
 }
 
 .listItemColumn{
-	display:inline-block;
+	display:table-cell;
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	vertical-align:top;
+}
+
+#listHeaders, #listNewForm, .listItem, {
+	display:table;
+	width:100%;
 }
 
 #divNewPriority{
