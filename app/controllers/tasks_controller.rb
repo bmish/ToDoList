@@ -7,11 +7,11 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
     if @task.save
       @task = nil;
-      @tasks = Task.all
-      render 'index'
+      index()
+      render :index
     else
-      @tasks = Task.all
-      render 'index'
+      index()
+      render :index
     end
   end
   
@@ -20,7 +20,7 @@ class TasksController < ApplicationController
   end
   
   def index
-    @tasks = Task.all
+    @tasks = Task.joins(:category).order("priority, LOWER(categories.title), LOWER(tasks.title)")
   end
   
   def edit
@@ -33,6 +33,7 @@ class TasksController < ApplicationController
     if @task.update(params[:task].permit(:title, :category_id, :priority, :notes))
       redirect_to @task
     else
+      edit()
       render 'edit'
     end
   end
