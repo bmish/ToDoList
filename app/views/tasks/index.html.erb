@@ -8,7 +8,6 @@
 				--><div class="listItemColumn listItemTitle">Task</div><!--
 				--><div class="listItemColumn listItemCategory">Category</div><!--
 				--><div class="listItemColumn listItemPriority">P</div><!--
-				--><div class="listItemColumn listItemEdit"></div><!--
 				--><div class="listItemColumn listItemDelete"></div>
 			</div>
  
@@ -20,7 +19,6 @@
 			      --><div class="listItemColumn listItemTitle"><%= task.title %></div><!--
 				  --><div class="listItemColumn listItemCategory"><%= Category.find(task.category_id).title %></div><!--
 				  --><div class="listItemColumn listItemPriority"><%= task.priority %></div><!--
-				  --><div class="listItemColumn listItemEdit"><%= link_to 'E', edit_task_path(task) %></div><!--
 				  --><div class="listItemColumn listItemDelete"><%= link_to 'X', task_path(task), method: :delete, data: {confirm: 'Are you sure?'}%></div>
 			  	</div>
 		    <% end %>

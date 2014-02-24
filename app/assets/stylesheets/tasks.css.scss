@@ -6,9 +6,6 @@ body{
 	margin:0;
 }
 
-#pageContent{
-}
-
 #centerColumn{
 	width:100%;
 	margin:0 auto;
@@ -36,9 +33,6 @@ body{
 	font-weight:bold;
 }
 
-#listItems{
-}
-
 .listItem{
 	border-bottom-color:rgb(238, 238, 238);
 	border-bottom-style:solid;
@@ -46,40 +40,20 @@ body{
 }
 
 .listItemCheckbox{
-	width:25px;
-	padding-top:7px;
-	padding-left:10px;
-}
-
-.listItemTitle{
-	padding:7px;
+	width:26px;
+	padding-right:0px !important;
 }
 
 .listItemCategory{
 	width:100px;
-	padding:7px;
 }
 
 .listItemPriority{
 	width:50px;
-	padding:7px;
 }
 
-.listItemEdit{
-	width:15px;
-	padding-top:7px;
-}
-
-.listItemDelete{
-	width:15px;
-	padding-top:7px;
-	padding-right:15px;
-}
-
-.listItemSave{
-	width:30px;
-	padding-top:7px;
-	padding-right:15px;
+.listItemDelete, .listItemSave{
+	width:40px;
 }
 
 .listItemColumn{
@@ -87,6 +61,7 @@ body{
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	vertical-align:top;
+	padding:7px;
 }
 
 #listHeaders, #listNewForm, .listItem, {
@@ -94,13 +69,9 @@ body{
 	width:100%;
 }
 
-#divNewPriority{
-	padding-left:0px;
-	padding-right:0px;
-}
-
-#divNewSave{
-	padding-left:0px;
+#divNewCategory > select, #divNewPriority > select, #divNewSave > input{
+	margin-left:0;
+	margin-right:0;
 }
 
 #task_title{
