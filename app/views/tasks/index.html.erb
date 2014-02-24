@@ -15,10 +15,10 @@
  
 		    <% @tasks.each do |task| %>
 			    <div class="listItem">
-			      <div class="listItemColumn listItemCheckbox"><%= check_box("completed", task.id, {checked: task.done}) %></div><!--
-			      --><div class="listItemColumn listItemTitle"><%= task.title %></div><!--
-				  --><div class="listItemColumn listItemCategory"><%= Category.find(task.category_id).title %></div><!--
-				  --><div class="listItemColumn listItemPriority"><%= task.priority %></div><!--
+			      <div class="listItemColumn listItemCheckbox"><%= check_box("completed", task.id, {checked: task.done, class: 'taskCheckbox', :data => {:remote => true, :url => url_for(:action => 'complete', :id => task.id), :method => :put}}) %></div><!--
+			      --><div class="listItemColumn listItemTitle <%= if task.done; 'taskCompleted' end %>"><%= task.title %></div><!--
+				  --><div class="listItemColumn listItemCategory <%= if task.done; 'taskCompleted' end %>"><%= Category.find(task.category_id).title %></div><!--
+				  --><div class="listItemColumn listItemPriority <%= if task.done; 'taskCompleted' end %>"><%= task.priority %></div><!--
 				  --><div class="listItemColumn listItemDelete"><%= link_to 'X', task_path(task), method: :delete, data: {confirm: 'Are you sure?'}%></div>
 			  	</div>
 		    <% end %>
