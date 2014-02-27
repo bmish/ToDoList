@@ -20,7 +20,7 @@ class TasksController < ApplicationController
   end
   
   def index
-    @tasks = Task.joins(:category).order("priority, LOWER(categories.title), LOWER(tasks.title)")
+    @tasks = Task.joins(:category).order("done, priority, LOWER(categories.title), LOWER(tasks.title)")
   end
   
   def edit
