@@ -5,9 +5,9 @@
 		<div id="listItems">
 			<div id="listHeaders">
 				<div class="listItemColumn listItemCheckbox"></div><!--
-				--><div class="listItemColumn listItemTitle">Task</div><!--
-				--><div class="listItemColumn listItemCategory">Category</div><!--
-				--><div class="listItemColumn listItemPriority">P</div><!--
+				--><div class="listItemColumn listItemTitle"><%= link_to('Task', tasks_path(sort: 'task')) %></div><!--
+				--><div class="listItemColumn listItemCategory"><%= link_to('Category', tasks_path(sort: 'category')) %></div><!--
+				--><div class="listItemColumn listItemPriority"><%= link_to('P', tasks_path(sort: 'priority')) %></div><!--
 				--><div class="listItemColumn listItemDelete"></div>
 			</div>
  

@@ -20,7 +20,15 @@ class TasksController < ApplicationController
   end
   
   def index
-    @tasks = Task.joins(:category).order("done, priority, LOWER(categories.title), LOWER(tasks.title)")
+    if !params[:sort] || params[:sort].empty? || params[:sort] == 'priority'
+      @sort = 'tasks.done, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
+    elsif params[:sort] == 'category'
+      @sort = 'tasks.done, LOWER(categories.title), tasks.priority, LOWER(tasks.title)'
+    elsif params[:sort] == 'task'
+      @sort = 'tasks.done, LOWER(tasks.title), tasks.priority, LOWER(categories.title)'
+    end
+    
+    @tasks = Task.joins(:category).order(@sort)
   end
   
   def edit

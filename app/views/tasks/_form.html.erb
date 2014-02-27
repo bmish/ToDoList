@@ -1,5 +1,5 @@
 <div id="listNew" class="listItem">
-	<%= form_for :task, url: tasks_path do |f| %>
+	<%= form_for :task, url: tasks_path(params) do |f| %>
 		<div id="listNewForm">
 			<div class="listItemColumn listItemCheckbox"></div><!--
 			--><div id="divNewTitle" class="listItemColumn listItemTitle"><%= f.text_field :title, :placeholder => "Task", :autofocus => true %></div><!--
