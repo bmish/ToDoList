@@ -18,16 +18,24 @@ jQuery ->
 		taskID = $(event.target).data('id')
 		$('#listItem_'+taskID).remove()
 		
-	listTitleTextHeaderOnClick = (event) ->
-		$('#listTitle h1').toggle()
-		$('#listTitle input').toggle()
-		$('#listTitle input').focus()
+	listTitleHeaderTextOnClick = (event) ->
+		$('#listTitleHeader').hide()
+		$('#list_title').show()
+		$('#list_title').focus()
 		
 	listTitleInputOnFocusLost = (event) ->
-		$('#listTitle h1').toggle()
-		$('#listTitle input').toggle()
+		$('#listTitleHeader').text($('#list_title').val())
+		$('#listTitle form').submit()
+		
+		$('#list_title').hide()
+		$('#listTitleHeader').show()
+		
+	listTitleInputOnKeypress = (event) ->
+		if event.which == 13 # Enter key.
+			listTitleInputOnFocusLost(event)
 
 	$('.taskCheckbox').change(taskCheckboxOnChange)
 	$('.taskDelete[data-remote]').on('ajax:complete', taskDeleteOnAJAXComplete)
-	$('#listTitle h1').click(listTitleTextHeaderOnClick)
-	$('#listTitle input').focusout(listTitleInputOnFocusLost)
+	$('#listTitleHeader').click(listTitleHeaderTextOnClick)
+	$('#list_title').focusout(listTitleInputOnFocusLost)
+	$('#list_title').keypress(listTitleInputOnKeypress)

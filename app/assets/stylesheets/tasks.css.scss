@@ -11,12 +11,12 @@ body{
 	margin:0 auto;
 }
 
-#listTitle{
+#listTitleDiv{
 	background-color:rgb(238, 238, 238);
 	padding:10px;
 }
 
-#listTitle h1{
+#listTitleHeader{
 	display:inline-block;
 	
 	font-family:arial;
@@ -29,7 +29,7 @@ body{
 	cursor:pointer;
 }
 
-#listTitle input{
+#list_title{
 	display:none;
 	
 	font-family:arial;

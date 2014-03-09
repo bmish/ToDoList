@@ -2,7 +2,12 @@
 
 <div id="pageContent">
 	<div id="centerColumn">
-		<div id="listTitle"><h1><%= @list.title %></h1><%= text_field_tag(:title, @list.title) %></div>
+		<div id="listTitleDiv">
+			<h1 id="listTitleHeader"><%= @list.title %></h1>
+			<%= form_for :list, url: list_path(@list), method: :patch, remote: true do |f| %>
+				<%= f.text_field :title %>
+			<% end %>
+		</div>
 		
 		<div id="listItems">
 			<div id="listHeaders">
