@@ -20,6 +20,11 @@ class TasksController < ApplicationController
   end
   
   def index
+    # Get the current list.
+    @list_id = 1 # Temporarily hard-coded.
+    @list = List.find(@list_id)
+    
+    # Determine how to sort the tasks.
     if !params[:sort] || params[:sort].empty? || params[:sort] == 'priority'
       @sort = 'tasks.done, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     elsif params[:sort] == 'category'
@@ -29,8 +34,6 @@ class TasksController < ApplicationController
     end
     
     @tasks = Task.joins(:category).order(@sort)
-    
-    @listTitle = 'My Tasks'
   end
   
   def edit
