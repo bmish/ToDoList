@@ -24,7 +24,10 @@ jQuery ->
 		$('#list_title').focus()
 		
 	listTitleInputOnFocusLost = (event) ->
-		$('#listTitleHeader').text($('#list_title').val())
+		newTitle = $('#list_title').val()
+		$('#listTitleHeader').text(newTitle)
+		document.title = newTitle
+		
 		$('#listTitle form').submit()
 		
 		$('#list_title').hide()
