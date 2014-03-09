@@ -5,8 +5,8 @@
 			--><div id="divNewTitle" class="listItemColumn listItemTitle"><%= f.text_field :title, :placeholder => "Task", :autofocus => true %></div><!--
 			--><div id="divNewCategory" class="listItemColumn listItemCategory"><%= select("task", "category_id", Category.all.collect {|c| [ c.title, c.id ] }, { include_blank: true }) %></div><!--
 			--><div id="divNewPriority" class="listItemColumn listItemPriority"><%= f.select :priority, options_for_select(["0", "1", "2", "3"], :disabled => "Priority", :selected => "3") %></div><!--
-			--><div id="divNewSave" class="listItemColumn listItemSave"><%= f.submit "+" %></div>
-			<!--<%= text_field_tag 'category_title_new', nil, placeholder: 'New category' %>-->
+			--><div id="divNewSave" class="listItemColumn listItemSave"><%= f.submit "+" %></div><!--
+			--><%= f.hidden_field :list_id, :value => @list.id %>
 		</div>
 	<% end %>
 

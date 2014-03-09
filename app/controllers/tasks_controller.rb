@@ -21,8 +21,8 @@ class TasksController < ApplicationController
   
   def index
     # Get the current list.
-    @list_id = 1 # Temporarily hard-coded.
-    @list = List.find(@list_id)
+    @LIST_ID = 1 # Temporarily hard-coded.
+    @list = List.find(@LIST_ID)
     
     # Determine how to sort the tasks.
     if !params[:sort] || params[:sort].empty? || params[:sort] == 'priority'
@@ -33,7 +33,7 @@ class TasksController < ApplicationController
       @sort = 'tasks.done, LOWER(tasks.title), tasks.priority, LOWER(categories.title)'
     end
     
-    @tasks = Task.joins(:category).order(@sort)
+    @tasks = Task.joins(:category).order(@sort).where(list_id: @list.id)
   end
   
   def edit
@@ -43,7 +43,7 @@ class TasksController < ApplicationController
   def update
     @task = Task.find(params[:id])
     
-    if @task.update(params[:task].permit(:title, :category_id, :priority, :notes))
+    if @task.update(params[:task].permit(:title, :category_id, :priority, :notes, :list_id))
       redirect_to @task
     else
       edit()
@@ -66,6 +66,6 @@ class TasksController < ApplicationController
   
   private
   def task_params
-    params.require(:task).permit(:title, :category_id, :priority, :notes)
+    params.require(:task).permit(:title, :category_id, :priority, :notes, :list_id)
   end
 end
