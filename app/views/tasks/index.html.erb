@@ -1,6 +1,6 @@
 <div id="pageContent">
 	<div id="centerColumn">
-		<div id="listTitle"><h1>Tasks</h1></div>
+		<div id="listTitle"><h1><%= @listTitle %></h1><%= text_field_tag(:title, @listTitle) %></div>
 		
 		<div id="listItems">
 			<div id="listHeaders">

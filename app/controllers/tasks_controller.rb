@@ -29,6 +29,8 @@ class TasksController < ApplicationController
     end
     
     @tasks = Task.joins(:category).order(@sort)
+    
+    @listTitle = 'My Tasks'
   end
   
   def edit

@@ -17,6 +17,17 @@ jQuery ->
 	taskDeleteOnAJAXComplete = (event) ->
 		taskID = $(event.target).data('id')
 		$('#listItem_'+taskID).remove()
+		
+	listTitleTextHeaderOnClick = (event) ->
+		$('#listTitle h1').toggle()
+		$('#listTitle input').toggle()
+		$('#listTitle input').focus()
+		
+	listTitleInputOnFocusLost = (event) ->
+		$('#listTitle h1').toggle()
+		$('#listTitle input').toggle()
 
 	$('.taskCheckbox').change(taskCheckboxOnChange)
 	$('.taskDelete[data-remote]').on('ajax:complete', taskDeleteOnAJAXComplete)
+	$('#listTitle h1').click(listTitleTextHeaderOnClick)
+	$('#listTitle input').focusout(listTitleInputOnFocusLost)
