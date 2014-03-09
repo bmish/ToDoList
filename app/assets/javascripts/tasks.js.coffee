@@ -13,5 +13,10 @@ jQuery ->
 			$('#title_'+taskID).removeClass('taskCompleted')
 			$('#category_'+taskID).removeClass('taskCompleted')
 			$('#priority_'+taskID).removeClass('taskCompleted')
-	  
+
+	taskDeleteOnAJAXComplete = (event) ->
+		taskID = $(event.target).data('id')
+		$('#listItem_'+taskID).remove()
+
 	$('.taskCheckbox').change(taskCheckboxOnChange)
+	$('.taskDelete[data-remote]').on('ajax:complete', taskDeleteOnAJAXComplete)
