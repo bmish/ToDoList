@@ -33,7 +33,17 @@ class TasksController < ApplicationController
       @sort = 'tasks.done, LOWER(tasks.title), tasks.priority, LOWER(categories.title)'
     end
     
-    @tasks = Task.joins(:category).order(@sort).where(list_id: @list.id).where(deleted: false)
+    tasksQuery = Task.joins(:category).order(@sort).where(list_id: @list.id).where(deleted: false)
+    
+    if params[:priority] && params[:priority].to_i >= 0 && params[:priority].to_i <= 3
+      tasksQuery = tasksQuery.where(priority: params[:priority].to_i)
+    end
+      
+    if params[:category] && params[:category].to_i >= 1
+      tasksQuery = tasksQuery.where(category_id: params[:category].to_i)
+    end
+    
+    @tasks = tasksQuery
   end
   
   def edit
