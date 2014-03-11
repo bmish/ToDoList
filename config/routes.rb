@@ -10,6 +10,7 @@ Todolist::Application.routes.draw do
   root 'welcome#index'
   
   put 'tasks/complete/:id' => 'tasks#complete'
+  post 'tasks/upload' => 'tasks#upload'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

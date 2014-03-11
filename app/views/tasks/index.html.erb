@@ -31,4 +31,11 @@
 		    <% end %>
 		</div>
 	</div>
+	<div id="importSection">
+		<%= form_tag({action: :upload}, multipart: true) do %>
+			<%= file_field_tag 'csv' %>
+			<%= submit_tag 'Import CSV' %>
+		<% end %>
+	</div>
 </div>
+

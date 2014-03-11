@@ -21,7 +21,7 @@ class TasksController < ApplicationController
   
   def index
     # Get the current list.
-    @LIST_ID = 1 # Temporarily hard-coded.
+    @LIST_ID = 1 # TODO: Temporarily hard-coded.
     @list = List.find(@LIST_ID)
     
     # Determine how to sort the tasks.
@@ -73,6 +73,32 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     @task.done = params[:completed] ? true : false
     @task.save
+  end
+  
+  def upload
+    # Read CSV from file.
+    file_data = params[:csv]
+    if file_data.respond_to?(:read)
+      csv_text = file_data.read
+    elsif file_data.respond_to?(:path)
+      csv_text = File.read(file_data.path)
+    else
+      logger.error "Bad file_data: #{file_data.class.name}: #{file_data.inspect}"
+      return
+    end
+
+    # Add tasks to database.
+    csv = CSV.parse(csv_text, :headers => true)
+    csv.each do |row|
+      task = Task.new
+      task.title = row['Task']
+      task.priority = row['Priority']
+      task.category_id = Category.find_or_create_by(title: row['Category']).id
+      task.list_id = 1 # TODO: Temporarily hard-coded.
+      task.save
+    end
+    
+    redirect_to tasks_path
   end
   
   private
