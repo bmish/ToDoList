@@ -24,7 +24,7 @@
 			    <div class="listItem" id="listItem_<%= task.id %>">
 			      <div class="listItemColumn listItemCheckbox"><%= check_box("completed", task.id, {checked: task.done, class: 'taskCheckbox', :data => {:remote => true, :url => url_for(:action => 'complete', :id => task.id), :id => task.id, :method => :put}}) %></div><!--
 			      --><div id="title_<%= task.id %>" class="listItemColumn listItemTitle <%= if task.done; 'taskCompleted' end %>"><%= task.title %></div><!--
-				  --><div id="category_<%= task.id %>" class="listItemColumn listItemCategory <%= if task.done; 'taskCompleted' end %>"><%= link_to(Category.find(task.category_id).title, tasks_path(category: task.category_id)) %></div><!--
+				  --><div id="category_<%= task.id %>" class="listItemColumn listItemCategory <%= if task.done; 'taskCompleted' end %>"><%= link_to(task.category_title, tasks_path(category: task.category_id)) %></div><!--
 				  --><div id="priority_<%= task.id %>" class="listItemColumn listItemPriority <%= if task.done; 'taskCompleted' end %>"><%= link_to(task.priority, tasks_path(priority: task.priority)) %></div><!--
 				  --><div class="listItemColumn listItemDelete"><%= link_to 'X', task_path(task), method: :delete, data: {confirm: 'Are you sure?', :id => task.id}, remote: true, class: 'taskDelete' %></div>
 			  	</div>
