@@ -11,13 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140309231827) do
+ActiveRecord::Schema.define(version: 20140312034716) do
 
   create_table "categories", force: true do |t|
     t.string   "title"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "categories", ["title"], name: "index_categories_on_title", unique: true
 
   create_table "lists", force: true do |t|
     t.string   "title"
@@ -39,5 +41,6 @@ ActiveRecord::Schema.define(version: 20140309231827) do
 
   add_index "tasks", ["category_id"], name: "index_tasks_on_category_id"
   add_index "tasks", ["list_id"], name: "index_tasks_on_list_id"
+  add_index "tasks", ["title"], name: "index_tasks_on_title", unique: true
 
 end
