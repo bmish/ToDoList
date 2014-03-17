@@ -7,6 +7,9 @@
 			<%= form_for :list, url: list_path(@list), method: :patch, remote: true do |f| %>
 				<%= f.text_field :title %>
 			<% end %>
+			<% if @listConstrained %>
+				<span id="removeConstraintLink"><%= link_to('[remove constraints]', tasks_path) %></span>
+			<% end %>
 		</div>
 		
 		<div id="listItems">

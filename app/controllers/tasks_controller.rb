@@ -45,6 +45,8 @@ class TasksController < ApplicationController
     end
     
     @tasks = tasksQuery
+    
+    @listConstrained = (params[:sort] || params[:priority] || params[:category])
   end
   
   def edit
