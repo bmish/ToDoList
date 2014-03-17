@@ -1,4 +1,6 @@
 class TasksController < ApplicationController
+  LIST_ID = 1 # TODO: Temporarily hard-coded.
+  
   def new
     @task = Task.new
   end
@@ -21,19 +23,18 @@ class TasksController < ApplicationController
   
   def index
     # Get the current list.
-    @LIST_ID = 1 # TODO: Temporarily hard-coded.
-    @list = List.find(@LIST_ID)
+    @list = List.find(LIST_ID)
     
     # Determine how to sort the tasks.
     if !params[:sort] || params[:sort].empty? || params[:sort] == 'priority'
-      @sort = 'tasks.done, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
+      sort = 'tasks.done, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     elsif params[:sort] == 'category'
-      @sort = 'tasks.done, LOWER(categories.title), tasks.priority, LOWER(tasks.title)'
+      sort = 'tasks.done, LOWER(categories.title), tasks.priority, LOWER(tasks.title)'
     elsif params[:sort] == 'task'
-      @sort = 'tasks.done, LOWER(tasks.title), tasks.priority, LOWER(categories.title)'
+      sort = 'tasks.done, LOWER(tasks.title), tasks.priority, LOWER(categories.title)'
     end
     
-    tasksQuery = Task.joins(:category).order(@sort).where(list_id: @list.id).where(deleted: false).select("tasks.*, categories.title as category_title")
+    tasksQuery = Task.joins(:category).order(sort).where(list_id: @list.id).where(deleted: false).select("tasks.*, categories.title as category_title")
     
     if params[:priority] && params[:priority].to_i >= 0 && params[:priority].to_i <= 3
       tasksQuery = tasksQuery.where(priority: params[:priority].to_i)
@@ -113,7 +114,7 @@ class TasksController < ApplicationController
     task.title = row['Task']
     task.priority = row['Priority']
     task.category_id = Category.find_or_create_by(title: row['Category']).id
-    task.list_id = 1 # TODO: Temporarily hard-coded.
+    task.list_id = LIST_ID
 
     begin
       if task.save
