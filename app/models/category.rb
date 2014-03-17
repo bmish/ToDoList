@@ -6,6 +6,6 @@ class Category < ActiveRecord::Base
 
   private
     def remove_whitespace
-      self.title = self.title.strip
+      self.title = self.title ? self.title.strip : ""
     end
 end

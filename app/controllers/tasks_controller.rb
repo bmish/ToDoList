@@ -83,26 +83,46 @@ class TasksController < ApplicationController
     elsif file_data.respond_to?(:path)
       csv_text = File.read(file_data.path)
     else
+      csv_text = nil
       logger.error "Bad file_data: #{file_data.class.name}: #{file_data.inspect}"
-      return
     end
 
     # Add tasks to database.
-    csv = CSV.parse(csv_text, :headers => true)
-    csv.each do |row|
-      task = Task.new
-      task.title = row['Task']
-      task.priority = row['Priority']
-      task.category_id = Category.find_or_create_by(title: row['Category']).id
-      task.list_id = 1 # TODO: Temporarily hard-coded.
-      task.save
+    @importCountSucceeded = 0
+    @importCountFailed = 0
+    require 'csv'
+    if csv_text
+      csv = CSV.parse(csv_text, :headers => true)
+      csv.each do |row|
+        importCSVRow row
+      end
     end
     
-    redirect_to tasks_path
+    @uploadSubmitted = true
+    index()
+    render :index
   end
   
   private
   def task_params
     params.require(:task).permit(:title, :category_id, :priority, :notes, :list_id)
+  end
+  
+  def importCSVRow row
+    task = Task.new
+    task.title = row['Task']
+    task.priority = row['Priority']
+    task.category_id = Category.find_or_create_by(title: row['Category']).id
+    task.list_id = 1 # TODO: Temporarily hard-coded.
+
+    begin
+      if task.save
+        @importCountSucceeded += 1
+      else
+        @importCountFailed += 1
+      end
+    rescue
+      @importCountFailed += 1
+    end
   end
 end
