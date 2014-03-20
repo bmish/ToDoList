@@ -38,8 +38,8 @@
 		<%= form_tag({action: :upload}, multipart: true) do %>
 			<%= file_field_tag 'csv' %>
 			<%= submit_tag 'Import CSV' %>
-			<% if @uploadSubmitted %>
-				<div id="importSectionStatus">Imported <%= pluralize(@importCountSucceeded, 'task') %> successfully. Failed to import <%= pluralize(@importCountFailed, 'tasks') %>.</div>
+			<% if flash[:importCountSucceeded] %>
+				<div id="importSectionStatus">Imported <%= pluralize(flash[:importCountSucceeded], 'task') %> successfully. Failed to import <%= pluralize(flash[:importCountFailed], 'tasks') %>.</div>
 			<% end %>
 		<% end %>
 	</div>

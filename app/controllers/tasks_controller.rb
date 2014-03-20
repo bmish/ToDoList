@@ -101,9 +101,7 @@ class TasksController < ApplicationController
       end
     end
     
-    @uploadSubmitted = true
-    index()
-    render :index
+    redirect_to tasks_path, flash: {importCountSucceeded: @importCountSucceeded, importCountFailed: @importCountFailed}
   end
   
   private
