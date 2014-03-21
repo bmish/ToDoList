@@ -67,15 +67,21 @@ class TasksController < ApplicationController
   def destroy
     @task = Task.find(params[:id])
     @task.deleted = true
-    @task.save
+    success = @task.save
     
-    redirect_to tasks_path
+    respond_to do |format|
+        format.json { head (success ? :ok : :internal_server_error)}
+    end
   end
   
   def complete
     @task = Task.find(params[:id])
     @task.done = params[:completed] ? true : false
-    @task.save
+    success = @task.save
+
+    respond_to do |format|
+      format.json { head (success ? :ok : :internal_server_error)}
+    end
   end
   
   def upload
