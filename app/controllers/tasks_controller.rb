@@ -2,7 +2,7 @@ class TasksController < ApplicationController
   LIST_ID = 1 # TODO: Temporarily hard-coded.
   
   def new
-    @task = Task.new
+    redirect_to tasks_path
   end
   
   def create
