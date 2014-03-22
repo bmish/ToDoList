@@ -34,6 +34,8 @@ class TasksController < ApplicationController
       sort = 'tasks.done, LOWER(tasks.title), tasks.priority, LOWER(categories.title)'
     elsif params[:sort] == 'created'
       sort = 'tasks.done, tasks.created_at DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
+    elsif params[:sort] == 'blocked'
+      sort = 'tasks.done, tasks.blocked DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     end
     
     tasksQuery = Task.joins(:category).order(sort).where(list_id: @list.id).where(deleted: false).select("tasks.*, categories.title as category_title")
@@ -114,7 +116,7 @@ class TasksController < ApplicationController
   
   private
   def task_params
-    params.require(:task).permit(:title, :category_id, :priority, :notes, :list_id)
+    params.require(:task).permit(:title, :category_id, :priority, :notes, :list_id, :blocked)
   end
   
   def importCSVRow row

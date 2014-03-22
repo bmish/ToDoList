@@ -19,6 +19,7 @@
 				--><div class="listItemColumn listItemCategory"><%= link_to('Category', tasks_path(sort: 'category')) %></div><!--
 				--><div class="listItemColumn listItemPriority"><%= link_to('P', tasks_path(sort: 'priority')) %></div><!--
 				--><div class="listItemColumn listItemDateCreated"><%= link_to('Created', tasks_path(sort: 'created')) %></div><!--
+				--><div class="listItemColumn listItemBlocked"><%= link_to('Blocked', tasks_path(sort: 'blocked')) %></div><!--
 				--><div class="listItemColumn listItemDelete"></div>
 			</div>
  
@@ -31,6 +32,7 @@
 				  --><div id="category_<%= task.id %>" class="listItemColumn listItemCategory <%= if task.done; 'taskCompleted' end %>"><%= link_to(task.category_title, tasks_path(category: task.category_id)) %></div><!--
 				  --><div id="priority_<%= task.id %>" class="listItemColumn listItemPriority <%= if task.done; 'taskCompleted' end %>"><%= link_to(task.priority, tasks_path(priority: task.priority)) %></div><!--
 				  --><div id="datecreated_<%= task.id %>" class="listItemColumn listItemDateCreated <%= if task.done; 'taskCompleted' end %>"><time datetime="<%= task.created_at.strftime("%FT%T%:z") %>"><%= task.created_at.strftime("%-m/%-d") %></time></div><!--
+				  --><div id="blocked_<%= task.id %>" class="listItemColumn listItemBlocked <%= if task.done; 'taskCompleted' end %>"><%= task.blocked ? 'Yes' : '' %></div><!--
 				  --><div class="listItemColumn listItemDelete"><%= link_to 'X', task_path(task), method: :delete, data: {confirm: 'Are you sure?', :id => task.id}, remote: true, class: 'taskDelete' %></div>
 			  	</div>
 		    <% end %>
