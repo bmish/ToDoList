@@ -32,6 +32,8 @@ class TasksController < ApplicationController
       sort = 'tasks.done, LOWER(categories.title), tasks.priority, LOWER(tasks.title)'
     elsif params[:sort] == 'task'
       sort = 'tasks.done, LOWER(tasks.title), tasks.priority, LOWER(categories.title)'
+    elsif params[:sort] == 'created'
+      sort = 'tasks.done, tasks.created_at DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     end
     
     tasksQuery = Task.joins(:category).order(sort).where(list_id: @list.id).where(deleted: false).select("tasks.*, categories.title as category_title")
