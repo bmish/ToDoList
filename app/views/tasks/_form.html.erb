@@ -2,7 +2,7 @@
 	<%= form_for :task, url: tasks_path do |f| %>
 		<div id="listNewForm">
 			<div class="listItemColumn listItemCheckbox"></div><!--
-			--><div id="divNewTitle" class="listItemColumn listItemTitle"><%= f.text_field :title, :placeholder => "Task", :autofocus => true %></div><!--
+			--><div id="divNewTitle" class="listItemColumn listItemTitle"><%= f.text_field :title, :placeholder => "Task", :autofocus => true, :required => true %></div><!--
 			--><div id="divNewCategory" class="listItemColumn listItemCategory"><%= select("task", "category_id", Category.order(:title).collect {|c| [ c.title, c.id ] }, { include_blank: true }) %></div><!--
 			--><div id="divNewPriority" class="listItemColumn listItemPriority"><%= f.select :priority, options_for_select(["0", "1", "2", "3"], :disabled => "Priority", :selected => "3") %></div><!--
 			--><div id="divNewDateCreated" class="listItemColumn listItemDateCreated"><%= Time.new.strftime("%-m/%-d") %></div><!--
