@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140322045210) do
+ActiveRecord::Schema.define(version: 20140324025301) do
 
   create_table "categories", force: true do |t|
     t.string   "title"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 20140322045210) do
     t.integer  "list_id"
     t.boolean  "deleted",     default: false
     t.boolean  "blocked",     default: false
+    t.date     "due"
   end
 
   add_index "tasks", ["category_id"], name: "index_tasks_on_category_id"

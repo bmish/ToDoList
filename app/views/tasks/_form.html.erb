@@ -6,6 +6,7 @@
 			--><div id="divNewCategory" class="listItemColumn listItemCategory"><%= select("task", "category_id", Category.order(:title).collect {|c| [ c.title, c.id ] }, { include_blank: true }) %></div><!--
 			--><div id="divNewPriority" class="listItemColumn listItemPriority"><%= f.select :priority, options_for_select(["0", "1", "2", "3"], :disabled => "Priority", :selected => "3") %></div><!--
 			--><div id="divNewDateCreated" class="listItemColumn listItemDateCreated"><%= Time.new.strftime("%-m/%-d") %></div><!--
+			--><div id="divNewDateDue" class="listItemColumn listItemDateDue"><%= f.text_field :due, :id => 'task_due_tmp' %><%= f.hidden_field :due %></div><!--
 			--><div id="divNewBlocked" class="listItemColumn listItemBlocked"><%= f.check_box :blocked %></div><!--
 			--><div id="divNewSave" class="listItemColumn listItemSave"><%= f.submit "+" %></div><!--
 			--><%= f.hidden_field :list_id, :value => @list.id %>

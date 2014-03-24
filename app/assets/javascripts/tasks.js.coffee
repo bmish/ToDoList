@@ -44,3 +44,4 @@ jQuery ->
 	$('#listTitleHeader').click(listTitleHeaderTextOnClick)
 	$('#list_title').focusout(listTitleInputOnFocusLost)
 	$('#list_title').keypress(listTitleInputOnKeypress)
+	$('#task_due_tmp').datepicker({altField: '#task_due', altFormat: 'yy-mm-dd'}) # Use altField because Rails expects a certain format when creating the new task.
