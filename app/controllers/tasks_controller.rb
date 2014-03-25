@@ -50,9 +50,18 @@ class TasksController < ApplicationController
       tasksQuery = tasksQuery.where(category_id: params[:category].to_i)
     end
     
+    if params[:created] && !params[:created].empty?
+      created = Time.strptime(params[:created], "%F")
+      tasksQuery = tasksQuery.where(created_at: (created.midnight..(created.midnight + 1.day - 1.second)))
+    end
+    
+    if params[:due] && !params[:due].empty?
+      tasksQuery = tasksQuery.where(due: params[:due])
+    end
+    
     @tasks = tasksQuery
     
-    @listConstrained = (params[:sort] || params[:priority] || params[:category])
+    @listConstrained = (params[:sort] || params[:priority] || params[:category] || params[:created] || params[:due])
   end
   
   def edit
