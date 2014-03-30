@@ -57,6 +57,7 @@ class TasksController < ApplicationController
     if params[:category] && params[:category].to_i >= 1
       @constrainedCategory = true
       tasksQuery = tasksQuery.where(category_id: params[:category].to_i)
+      @showCategoryHeaders = false # It's unnecessary to show category headers when we are constrained to one category.
     end
     
     @constrainedCreated = false
