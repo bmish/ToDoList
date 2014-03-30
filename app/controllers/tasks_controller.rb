@@ -26,6 +26,7 @@ class TasksController < ApplicationController
     @list = List.find(LIST_ID)
     
     # Determine how to sort the tasks.
+    sort = ''
     if !params[:sort] || params[:sort].empty? || params[:sort] == 'priority'
       sort = 'tasks.done, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     elsif params[:sort] == 'category'
@@ -39,23 +40,32 @@ class TasksController < ApplicationController
     elsif params[:sort] == 'blocked'
       sort = 'tasks.done, tasks.blocked DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     end
+    @constrainedSort = params[:sort] && !params[:sort].empty?
     
     tasksQuery = Task.joins('LEFT JOIN categories ON tasks.category_id = categories.id').order(sort).where(list_id: @list.id).where(deleted: false).select("tasks.*, categories.title as category_title")
 
+    @constrainedPriority = false
     if params[:priority] && params[:priority].to_i >= 0 && params[:priority].to_i <= 3
+      @constrainedPriority = true
       tasksQuery = tasksQuery.where(priority: params[:priority].to_i)
     end
-      
+
+    @constrainedCategory = false
     if params[:category] && params[:category].to_i >= 1
+      @constrainedCategory = true
       tasksQuery = tasksQuery.where(category_id: params[:category].to_i)
     end
     
+    @constrainedCreated = false
     if params[:created] && !params[:created].empty?
+      @constrainedCreated = true
       created = Time.strptime(params[:created], "%F")
       tasksQuery = tasksQuery.where(created_at: (created.midnight..(created.midnight + 1.day - 1.second)))
     end
     
+    @constrainedDue = false
     if params[:due] && !params[:due].empty?
+      @constrainedDue = true
       tasksQuery = tasksQuery.where(due: params[:due])
     end
     
@@ -64,7 +74,7 @@ class TasksController < ApplicationController
 
     @tasks = tasksQuery
     
-    @listConstrained = (params[:sort] || params[:priority] || params[:category] || params[:created] || params[:due])
+    @constrainedList = (@constrainedSort || @constrainedPriority || @constrainedCategory || @constrainedCreated || @constrainedDue)
   end
   
   def edit
