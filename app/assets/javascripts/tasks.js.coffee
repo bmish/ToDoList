@@ -25,6 +25,16 @@ jQuery ->
 		$('#list_title').show()
 		$('#list_title').focus()
 		
+	listSectionHeaderTextOnClick = (event) ->
+		priority = $(event.target).data('priority')
+		category_id = $(event.target).data('category_id')
+
+		if priority != undefined && category_id == undefined
+			$('.listSectionItems[data-priority='+priority+']').slideToggle()
+
+		if priority != undefined && category_id != undefined
+			$('.listSectionItems[data-priority='+priority+'][data-category_id='+category_id+']').slideToggle()
+
 	listTitleInputOnFocusLost = (event) ->
 		newTitle = $('#list_title').val()
 		$('#listTitleHeader').text(newTitle)
@@ -42,6 +52,7 @@ jQuery ->
 	$('.taskCheckbox').change(taskCheckboxOnChange)
 	$('.taskDelete[data-remote]').on('ajax:complete', taskDeleteOnAJAXComplete)
 	$('#listTitleHeader').click(listTitleHeaderTextOnClick)
+	$('.listSectionHeader').click(listSectionHeaderTextOnClick)
 	$('#list_title').focusout(listTitleInputOnFocusLost)
 	$('#list_title').keypress(listTitleInputOnKeypress)
 	$('#task_due_tmp').datepicker({altField: '#task_due', altFormat: 'yy-mm-dd'}) # Use altField because Rails expects a certain format when creating the new task.

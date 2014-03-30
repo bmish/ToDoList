@@ -34,8 +34,8 @@
 						<div class="listSectionHeader listSectionHeaderPriority" data-priority="<%= task.priority %>">P<%= task.priority %></div>
 						<div class="listSectionItems" data-priority="<%= task.priority %>">
 					<div class="listSectionCategory" data-category_id="<%= task.category_id %>">
-						<div class="listSectionHeader listSectionHeaderCategory" data-category_id="<%= task.category_id %>"><%= task.category_title %></div>
-						<div class="listSectionItems" data-category_id="<%= task.category_id %>">
+						<div class="listSectionHeader listSectionHeaderCategory" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>"><%= task.category_title %></div>
+						<div class="listSectionItems" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>">
 				<% end %>
 				<% if (prevTask && (prevTask.category_id != task.category_id)) %>
 					</div></div>
@@ -48,8 +48,8 @@
 				<% end %>
 				<% if (prevTask && (prevTask.category_id != task.category_id)) %>
 					<div class="listSectionCategory" data-category_id="<%= task.category_id %>">
-						<div class="listSectionHeader listSectionHeaderCategory" data-category_id="<%= task.category_id %>"><%= task.category_title %></div>
-						<div class="listSectionItems" data-category_id="<%= task.category_id %>">
+						<div class="listSectionHeader listSectionHeaderCategory" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>"><%= task.category_title %></div>
+						<div class="listSectionItems" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>">
 				<% end %>
 
 			    <div class="listItem" id="listItem_<%= task.id %>">
