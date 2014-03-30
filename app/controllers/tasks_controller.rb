@@ -41,7 +41,7 @@ class TasksController < ApplicationController
     end
     
     tasksQuery = Task.joins('LEFT JOIN categories ON tasks.category_id = categories.id').order(sort).where(list_id: @list.id).where(deleted: false).select("tasks.*, categories.title as category_title")
-    
+
     if params[:priority] && params[:priority].to_i >= 0 && params[:priority].to_i <= 3
       tasksQuery = tasksQuery.where(priority: params[:priority].to_i)
     end
@@ -59,6 +59,9 @@ class TasksController < ApplicationController
       tasksQuery = tasksQuery.where(due: params[:due])
     end
     
+    @showPriorityHeaders = !(params[:priorityHeaders] == 'false')
+    @showCategoryHeaders = !(params[:categoryHeaders] == 'false')
+
     @tasks = tasksQuery
     
     @listConstrained = (params[:sort] || params[:priority] || params[:category] || params[:created] || params[:due])

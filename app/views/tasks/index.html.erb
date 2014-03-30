@@ -30,26 +30,32 @@
 		    <% @tasks.each do |task| %>
 
 				<% if !prevTask %>
-					<div class="listSectionPriority" data-priority="<%= task.priority %>">
-						<div class="listSectionHeader listSectionHeaderPriority" data-priority="<%= task.priority %>">P<%= task.priority %></div>
-						<div class="listSectionItems" data-priority="<%= task.priority %>">
-					<div class="listSectionCategory" data-category_id="<%= task.category_id %>">
-						<div class="listSectionHeader listSectionHeaderCategory" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>"><%= task.category_title %></div>
-						<div class="listSectionItems" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>">
+					<% if @showPriorityHeaders %>
+						<div class="listSectionPriority" data-priority="<%= task.priority %>">
+							<div class="listSectionHeader listSectionHeaderPriority" data-priority="<%= task.priority %>">P<%= task.priority %></div>
+							<div class="listSectionItems" data-priority="<%= task.priority %>">
+					<% end %>
+					<% if @showCategoryHeaders %>
+						<div class="listSectionCategory" data-category_id="<%= task.category_id %>">
+							<div class="listSectionHeader listSectionHeaderCategory" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>"><%= task.category_title %></div>
+							<div class="listSectionItems" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>">
+					<% end %>
 				<% end %>
-				<% if (prevTask && (prevTask.category_id != task.category_id)) %>
-					</div></div>
-				<% end %>
-				<% if (prevTask && (prevTask.priority != task.priority)) %>
-					</div></div>
-					<div class="listSectionPriority" data-priority="<%= task.priority %>">
-						<div class="listSectionHeader listSectionHeaderPriority" data-priority="<%= task.priority %>">P<%= task.priority %></div>
-						<div class="listSectionItems" data-priority="<%= task.priority %>">
-				<% end %>
-				<% if (prevTask && (prevTask.category_id != task.category_id)) %>
-					<div class="listSectionCategory" data-category_id="<%= task.category_id %>">
-						<div class="listSectionHeader listSectionHeaderCategory" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>"><%= task.category_title %></div>
-						<div class="listSectionItems" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>">
+				<% if prevTask %>
+					<% if (@showPriorityHeaders && (prevTask.category_id != task.category_id)) %>
+						</div></div>
+					<% end %>
+					<% if (@showPriorityHeaders && (prevTask.priority != task.priority)) %>
+						</div></div>
+						<div class="listSectionPriority" data-priority="<%= task.priority %>">
+							<div class="listSectionHeader listSectionHeaderPriority" data-priority="<%= task.priority %>">P<%= task.priority %></div>
+							<div class="listSectionItems" data-priority="<%= task.priority %>">
+					<% end %>
+					<% if (@showCategoryHeaders && (prevTask.category_id != task.category_id)) %>
+						<div class="listSectionCategory" data-category_id="<%= task.category_id %>">
+							<div class="listSectionHeader listSectionHeaderCategory" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>"><%= task.category_title %></div>
+							<div class="listSectionItems" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>">
+					<% end %>
 				<% end %>
 
 			    <div class="listItem" id="listItem_<%= task.id %>">
@@ -65,8 +71,11 @@
 
 			<% prevTask = task %>
 		    <% end %>
-			<% if !@tasks.empty? # Ending tags for final priority and category section tags %>
-				</div></div></div></div>
+			<% if @showCategoryHeaders && !@tasks.empty? %>
+				</div></div>
+			<% end %>
+			<% if @showPriorityHeaders && !@tasks.empty? %>
+				</div></div>
 			<% end %>
 		</div>
 	</div>
