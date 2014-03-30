@@ -45,7 +45,7 @@ a{
 	border:0px;
 }
 
-#listHeaders{
+#listHeaders, .listSectionHeader{
 	display:block;
 	
 	border-bottom-color:rgb(238, 238, 238);
@@ -53,6 +53,20 @@ a{
 	border-bottom-width:1px;
 	
 	font-weight:bold;
+}
+
+.listSectionHeader{
+	padding:3px;
+}
+
+.listSectionHeaderPriority{
+	font-size:22px;
+	background-color:rgb(238, 238, 238);
+}
+
+.listSectionHeaderCategory{
+	font-size:18px;
+	background-color:rgb(246, 246, 246);
 }
 
 .listItem{
