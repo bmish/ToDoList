@@ -26,23 +26,14 @@ class TasksController < ApplicationController
     @list = List.find(LIST_ID)
     
     # Determine how to sort the tasks.
-    sort = ''
-    if !params[:sort] || params[:sort].empty? || params[:sort] == 'priority'
-      sort = 'tasks.done, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif params[:sort] == 'category'
-      sort = 'tasks.done, LOWER(categories.title), tasks.priority, LOWER(tasks.title)'
-    elsif params[:sort] == 'task'
-      sort = 'tasks.done, LOWER(tasks.title), tasks.priority, LOWER(categories.title)'
-    elsif params[:sort] == 'created'
-      sort = 'tasks.done, tasks.created_at DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif params[:sort] == 'due'
-      sort = 'tasks.done, tasks.due DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif params[:sort] == 'blocked'
-      sort = 'tasks.done, tasks.blocked DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
+    sort = getSortFromParams
+    @constrainedSort = (sort != Sort::NONE)
+    if sort == Sort::NONE
+      sort = Sort::PRIORITY # Default sort.
     end
-    @constrainedSort = params[:sort] && !params[:sort].empty?
-    
-    tasksQuery = Task.joins('LEFT JOIN categories ON tasks.category_id = categories.id').order(sort).where(list_id: @list.id).where(deleted: false).select("tasks.*, categories.title as category_title")
+    sqlSort = getSQLForSort(sort)
+
+    tasksQuery = Task.joins('LEFT JOIN categories ON tasks.category_id = categories.id').order(sqlSort).where(list_id: @list.id).where(deleted: false).select("tasks.*, categories.title as category_title")
 
     @showPriorityHeaders = !(params[:priorityHeaders] == 'false')
     @showCategoryHeaders = !(params[:categoryHeaders] == 'false')
@@ -160,5 +151,53 @@ class TasksController < ApplicationController
     rescue
       @importCountFailed += 1
     end
+  end
+
+  def getSortFromParams
+    sort = nil
+    if params[:sort] == 'priority'
+      sort = Sort::PRIORITY
+    elsif params[:sort] == 'category'
+      sort = Sort::CATEGORY
+    elsif params[:sort] == 'task'
+      sort = Sort::TASK
+    elsif params[:sort] == 'created'
+      sort = Sort::CREATED
+    elsif params[:sort] == 'due'
+      sort = Sort::DUE
+    elsif params[:sort] == 'blocked'
+      sort = Sort::BLOCKED
+    else
+      sort = Sort::NONE
+    end
+    return sort
+  end
+
+  def getSQLForSort sort
+    sql = ''
+    if sort == Sort::PRIORITY
+      sql = 'tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
+    elsif sort == Sort::CATEGORY
+      sql = 'LOWER(categories.title), tasks.priority, LOWER(tasks.title)'
+    elsif sort == Sort::TASK
+      sql = 'LOWER(tasks.title), tasks.priority, LOWER(categories.title)'
+    elsif sort == Sort::CREATED
+      sql = 'tasks.created_at DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
+    elsif sort == Sort::DUE
+      sql = 'tasks.due DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
+    elsif sort == Sort::BLOCKED
+      sql = 'tasks.blocked DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
+    end
+    return sql
+  end
+
+  module Sort
+    NONE = 0
+    PRIORITY = 1
+    CATEGORY = 2
+    TASK = 3
+    CREATED = 4
+    DUE = 5
+    BLOCKED = 6
   end
 end
