@@ -35,8 +35,8 @@ class TasksController < ApplicationController
 
     tasksQuery = Task.joins('LEFT JOIN categories ON tasks.category_id = categories.id').order(sqlSort).where(list_id: @list.id).where(deleted: false).select("tasks.*, categories.title as category_title")
 
-    @showPriorityHeaders = !(params[:priorityHeaders] == 'false')
-    @showCategoryHeaders = !(params[:categoryHeaders] == 'false')
+    @showPriorityHeaders = (sort == Sort::PRIORITY) && !(params[:priorityHeaders] == 'false')
+    @showCategoryHeaders = (sort == Sort::PRIORITY) && !(params[:categoryHeaders] == 'false')
 
     @constrainedPriority = false
     if params[:priority] && params[:priority].to_i >= 0 && params[:priority].to_i <= 3
