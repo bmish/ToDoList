@@ -6,11 +6,13 @@ jQuery ->
 	taskCheckboxOnChange = (event) ->
 		taskID = $(event.target).data('id')
 		if event.target.checked
+			$('#listItem_'+taskID).addClass('listItemTaskCompleted')
 			$('#title_'+taskID).addClass('taskCompleted')
 			$('#category_'+taskID).addClass('taskCompleted')
 			$('#priority_'+taskID).addClass('taskCompleted')
 			$('#datecreated_'+taskID).addClass('taskCompleted')
 		else
+			$('#listItem_'+taskID).removeClass('listItemTaskCompleted')
 			$('#title_'+taskID).removeClass('taskCompleted')
 			$('#category_'+taskID).removeClass('taskCompleted')
 			$('#priority_'+taskID).removeClass('taskCompleted')
@@ -49,6 +51,9 @@ jQuery ->
 		if event.which == 13 # Enter key.
 			listTitleInputOnFocusLost(event)
 
+	formClearCompletedOnSubmit = (event) ->
+		$('.listItemTaskCompleted').remove()
+
 	$('.taskCheckbox').change(taskCheckboxOnChange)
 	$('.taskDelete[data-remote]').on('ajax:complete', taskDeleteOnAJAXComplete)
 	$('#listTitleHeader').click(listTitleHeaderTextOnClick)
@@ -56,3 +61,4 @@ jQuery ->
 	$('#list_title').focusout(listTitleInputOnFocusLost)
 	$('#list_title').keypress(listTitleInputOnKeypress)
 	$('#task_due_tmp').datepicker({altField: '#task_due', altFormat: 'yy-mm-dd'}) # Use altField because Rails expects a certain format when creating the new task.
+	$('#formClearCompleted').submit(formClearCompletedOnSubmit)

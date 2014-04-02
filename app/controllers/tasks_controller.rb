@@ -104,6 +104,15 @@ class TasksController < ApplicationController
     end
   end
   
+  def clearCompleted
+    Task.where(done: true).update_all(deleted: true)
+    success = true
+
+    respond_to do |format|
+      format.json { head (success ? :ok : :internal_server_error)}
+    end
+  end
+
   def upload
     # Read CSV from file.
     file_data = params[:csv]

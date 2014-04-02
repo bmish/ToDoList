@@ -3,6 +3,9 @@
 <div id="pageContent">
 	<div id="centerColumn">
 		<div id="listTitleDiv">
+			<div id="options">
+				<%= button_to "Clear Completed", { action: "clearCompleted" }, remote: true, form: { id: "formClearCompleted" } %>
+			</div>
 			<h1 id="listTitleHeader"><%= @list.title %></h1>
 			<%= form_for :list, url: list_path(@list), method: :patch, remote: true do |f| %>
 				<%= f.text_field :title %>
@@ -48,7 +51,7 @@
 						<div class="listSectionItems" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>">
 				<% end %>
 
-			    <div class="listItem" id="listItem_<%= task.id %>">
+			    <div class="listItem <%= if task.done; 'listItemTaskCompleted' end %>" id="listItem_<%= task.id %>">
 			      <div class="listItemColumn listItemCheckbox"><%= check_box("completed", task.id, {checked: task.done, class: 'taskCheckbox', :data => {:remote => true, :url => url_for(:action => 'complete', :id => task.id), :id => task.id, :method => :put}}) %></div><!--
 			      --><div id="title_<%= task.id %>" class="listItemColumn listItemTitle <%= if task.done; 'taskCompleted' end %>"><%= task.title %></div><!--
 				  --><div id="category_<%= task.id %>" class="listItemColumn listItemCategory <%= if task.done; 'taskCompleted' end %>"><%= if task.category_title; link_to(task.category_title, tasks_path(category: task.category_id)) end %></div><!--
