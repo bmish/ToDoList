@@ -21,6 +21,7 @@ jQuery ->
 	taskDeleteOnAJAXComplete = (event) ->
 		taskID = $(event.target).data('id')
 		$('#listItem_'+taskID).remove()
+		removeEmptyListSections()
 		
 	listTitleHeaderTextOnClick = (event) ->
 		$('#listTitleHeader').hide()
@@ -53,6 +54,7 @@ jQuery ->
 
 	formClearCompletedOnSubmit = (event) ->
 		$('.listItemTaskCompleted').remove()
+		removeEmptyListSections()
 
 	$('.taskCheckbox').change(taskCheckboxOnChange)
 	$('.taskDelete[data-remote]').on('ajax:complete', taskDeleteOnAJAXComplete)
@@ -62,3 +64,7 @@ jQuery ->
 	$('#list_title').keypress(listTitleInputOnKeypress)
 	$('#task_due_tmp').datepicker({altField: '#task_due', altFormat: 'yy-mm-dd'}) # Use altField because Rails expects a certain format when creating the new task.
 	$('#formClearCompleted').submit(formClearCompletedOnSubmit)
+
+	removeEmptyListSections = ->
+		$('.listSectionItems:not(:has(*))').parent().remove() # Remove sections that have no children.
+		$('.listSectionItems:not(:has(*))').parent().remove() # Repeat in case a higher-level section just had all its children removed and now needs to be removed itself.
