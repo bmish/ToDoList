@@ -20,20 +20,33 @@ a{
 	padding:10px;
 }
 
-#listTitleHeader{
+.listTitleHeader{
+	display:inline-block;
+}
+
+.listTitleHeaderSeparator{
 	display:inline-block;
 	
 	font-family:arial;
 	font-size:24px;
 	font-weight:bold;
 	
+	margin-left:5px;
+	margin-right:5px;
+}
+
+.listTitleHeaderText{
+	font-family:arial;
+	font-size:24px;
+	font-weight:bold;
+
 	padding:0px;
 	margin:0px;
 	
 	cursor:pointer;
 }
 
-#list_title{
+.listTitleHeaderTextField{
 	display:none;
 	
 	font-family:arial;

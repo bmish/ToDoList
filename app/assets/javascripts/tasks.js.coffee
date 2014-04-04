@@ -24,9 +24,11 @@ jQuery ->
 		removeEmptyListSections()
 		
 	listTitleHeaderTextOnClick = (event) ->
-		$('#listTitleHeader').hide()
-		$('#list_title').show()
-		$('#list_title').focus()
+		list_id = $(event.target).data('list_id')
+
+		$('.listTitleHeaderText[data-list_id='+list_id+']').hide()
+		$('.listTitleHeaderTextField[data-list_id='+list_id+']').show()
+		$('.listTitleHeaderTextField[data-list_id='+list_id+']').focus()
 		
 	listSectionHeaderTextOnClick = (event) ->
 		priority = $(event.target).data('priority')
@@ -38,19 +40,23 @@ jQuery ->
 		if priority != undefined && category_id != undefined
 			$('.listSectionItems[data-priority='+priority+'][data-category_id='+category_id+']').slideToggle()
 
-	listTitleInputOnFocusLost = (event) ->
-		newTitle = $('#list_title').val()
-		$('#listTitleHeader').text(newTitle)
-		document.title = newTitle
+	listTitleHeaderTextFieldOnFocusLost = (event) ->
+		list_id = $(event.target).data('list_id')
+
+		oldTitle = $('.listTitleHeaderText[data-list_id='+list_id+']').text()
+		newTitle = $('.listTitleHeaderTextField[data-list_id='+list_id+']').val()
 		
-		$('#listTitle form').submit()
+		if oldTitle != newTitle
+			$('.listTitleHeaderText[data-list_id='+list_id+']').text(newTitle)
+			document.title = newTitle
+			$('#edit_list_'+list_id).submit()
 		
-		$('#list_title').hide()
-		$('#listTitleHeader').show()
+		$('.listTitleHeaderTextField[data-list_id='+list_id+']').hide()
+		$('.listTitleHeaderText[data-list_id='+list_id+']').show()
 		
-	listTitleInputOnKeypress = (event) ->
+	listTitleHeaderTextFieldOnKeypress = (event) ->
 		if event.which == 13 # Enter key.
-			listTitleInputOnFocusLost(event)
+			listTitleHeaderTextFieldOnFocusLost(event)
 
 	formClearCompletedOnSubmit = (event) ->
 		$('.listItemTaskCompleted').remove()
@@ -58,10 +64,10 @@ jQuery ->
 
 	$('.taskCheckbox').change(taskCheckboxOnChange)
 	$('.taskDelete[data-remote]').on('ajax:complete', taskDeleteOnAJAXComplete)
-	$('#listTitleHeader').click(listTitleHeaderTextOnClick)
+	$('.listTitleHeaderText').click(listTitleHeaderTextOnClick)
 	$('.listSectionHeader').click(listSectionHeaderTextOnClick)
-	$('#list_title').focusout(listTitleInputOnFocusLost)
-	$('#list_title').keypress(listTitleInputOnKeypress)
+	$('.listTitleHeaderTextField').focusout(listTitleHeaderTextFieldOnFocusLost)
+	$('.listTitleHeaderTextField').keypress(listTitleHeaderTextFieldOnKeypress)
 	$('#task_due_tmp').datepicker({altField: '#task_due', altFormat: 'yy-mm-dd'}) # Use altField because Rails expects a certain format when creating the new task.
 	$('#formClearCompleted').submit(formClearCompletedOnSubmit)
 

@@ -23,6 +23,7 @@ class TasksController < ApplicationController
   
   def index
     # Get the current list.
+    @lists = List.all
     @list = List.find(LIST_ID)
     
     # Determine how to sort the tasks.

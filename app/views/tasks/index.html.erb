@@ -16,13 +16,22 @@
 					<% end %>
 				</div>
 			</div>
-			<h1 id="listTitleHeader"><%= @list.title %></h1>
-			<%= form_for :list, url: list_path(@list), method: :patch, remote: true do |f| %>
-				<%= f.text_field :title %>
-			<% end %>
-			<% if @constrainedList %>
-				<span id="removeConstraintLink"><%= link_to('[remove constraints]', tasks_path) %></span>
-			<% end %>
+			<div id="listTitleHeaders">
+				<% @lists.each_with_index do |list, index| %>
+					<% if index > 0 %>
+						<div class="listTitleHeaderSeparator">|</div>
+					<% end %>
+					<div class="listTitleHeader">
+					<h1 class="listTitleHeaderText" data-list_id="<%= list.id %>"><%= list.title %></h1>
+					<%= form_for list, url: list_path(list), method: :patch, remote: true do |f| %>
+						<%= f.text_field :title, class: 'listTitleHeaderTextField', 'data-list_id' => list.id %>
+					<% end %>
+					<% if @constrainedList %>
+						<span class="removeConstraintLink"><%= link_to('[remove constraints]', tasks_path) %></span>
+					<% end %>
+					</div>
+				<% end %>
+			</div>
 		</div>
 		
 		<div id="listItems">
