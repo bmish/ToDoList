@@ -33,7 +33,7 @@ jQuery ->
 		category_id = $(event.target).data('category_id')
 
 		if priority != undefined && category_id == undefined
-			$('.listSectionItems[data-priority='+priority+']').slideToggle()
+			$('.listSectionItems[data-priority='+priority+']:not([data-category_id])').slideToggle()
 
 		if priority != undefined && category_id != undefined
 			$('.listSectionItems[data-priority='+priority+'][data-category_id='+category_id+']').slideToggle()
