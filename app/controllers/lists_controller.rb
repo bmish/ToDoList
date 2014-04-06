@@ -17,4 +17,9 @@ class ListsController < ApplicationController
         format.json { head (success ? :ok : :internal_server_error)}
     end
   end
+
+  def show
+    cookies['list_id'] = params[:id]
+    redirect_to tasks_path
+  end
 end

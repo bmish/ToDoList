@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140324025301) do
+ActiveRecord::Schema.define(version: 20140406193401) do
 
   create_table "categories", force: true do |t|
     t.string   "title"
@@ -43,6 +43,6 @@ ActiveRecord::Schema.define(version: 20140324025301) do
 
   add_index "tasks", ["category_id"], name: "index_tasks_on_category_id"
   add_index "tasks", ["list_id"], name: "index_tasks_on_list_id"
-  add_index "tasks", ["title"], name: "index_tasks_on_title", unique: true
+  add_index "tasks", ["title", "list_id"], name: "index_tasks_on_title_and_list_id", unique: true
 
 end

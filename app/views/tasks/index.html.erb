@@ -17,15 +17,12 @@
 				</div>
 			</div>
 			<div id="listTitleHeaders">
-				<% @lists.each_with_index do |list, index| %>
+				<% @lists.each do |list| %>
 					<div class="listTitleHeader">
-					<h1 class="listTitleHeaderText" data-list_id="<%= list.id %>"><%= list.title %></h1>
-					<%= form_for list, url: list_path(list), method: :patch, remote: true do |f| %>
-						<%= f.text_field :title, class: 'listTitleHeaderTextField', 'data-list_id' => list.id %>
-					<% end %>
-					<% if @constrainedList %>
-						<span class="removeConstraintLink"><%= link_to('[remove constraints]', tasks_path) %></span>
-					<% end %>
+						<%= link_to(list.title, list, class: 'listTitleHeaderText') %>
+						<% if @constrainedList && (list.id == @list.id) %>
+							<span class="removeConstraintLink"><%= link_to('[remove constraints]', tasks_path) %></span>
+						<% end %>
 					</div>
 					<div class="listTitleHeaderSeparator">|</div>
 				<% end %>

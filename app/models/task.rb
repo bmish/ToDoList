@@ -4,7 +4,7 @@ class Task < ActiveRecord::Base
   before_validation :remove_whitespace
   validates :title, presence: true
   validates :priority, presence: true
-  validates_uniqueness_of :title, :case_sensitive => false
+  validates_uniqueness_of :title, scope: :list_id, :case_sensitive => false
 
   private
     def remove_whitespace

@@ -22,14 +22,7 @@ jQuery ->
 		taskID = $(event.target).data('id')
 		$('#listItem_'+taskID).remove()
 		removeEmptyListSections()
-		
-	listTitleHeaderTextOnClick = (event) ->
-		list_id = $(event.target).data('list_id')
 
-		$('.listTitleHeaderText[data-list_id='+list_id+']').hide()
-		$('.listTitleHeaderTextField[data-list_id='+list_id+']').show()
-		$('.listTitleHeaderTextField[data-list_id='+list_id+']').focus()
-		
 	listSectionHeaderTextOnClick = (event) ->
 		priority = $(event.target).data('priority')
 		category_id = $(event.target).data('category_id')
@@ -40,34 +33,13 @@ jQuery ->
 		if priority != undefined && category_id != undefined
 			$('.listSectionItems[data-priority='+priority+'][data-category_id='+category_id+']').slideToggle()
 
-	listTitleHeaderTextFieldOnFocusLost = (event) ->
-		list_id = $(event.target).data('list_id')
-
-		oldTitle = $('.listTitleHeaderText[data-list_id='+list_id+']').text()
-		newTitle = $('.listTitleHeaderTextField[data-list_id='+list_id+']').val()
-		
-		if oldTitle != newTitle
-			$('.listTitleHeaderText[data-list_id='+list_id+']').text(newTitle)
-			document.title = newTitle
-			$('#edit_list_'+list_id).submit()
-		
-		$('.listTitleHeaderTextField[data-list_id='+list_id+']').hide()
-		$('.listTitleHeaderText[data-list_id='+list_id+']').show()
-		
-	listTitleHeaderTextFieldOnKeypress = (event) ->
-		if event.which == 13 # Enter key.
-			listTitleHeaderTextFieldOnFocusLost(event)
-
 	formClearCompletedOnSubmit = (event) ->
 		$('.listItemTaskCompleted').remove()
 		removeEmptyListSections()
 
 	$('.taskCheckbox').change(taskCheckboxOnChange)
 	$('.taskDelete[data-remote]').on('ajax:complete', taskDeleteOnAJAXComplete)
-	$('.listTitleHeaderText').click(listTitleHeaderTextOnClick)
 	$('.listSectionHeader').click(listSectionHeaderTextOnClick)
-	$('.listTitleHeaderTextField').focusout(listTitleHeaderTextFieldOnFocusLost)
-	$('.listTitleHeaderTextField').keypress(listTitleHeaderTextFieldOnKeypress)
 	$('#task_due_tmp').datepicker({altField: '#task_due', altFormat: 'yy-mm-dd'}) # Use altField because Rails expects a certain format when creating the new task.
 	$('#formClearCompleted').submit(formClearCompletedOnSubmit)
 

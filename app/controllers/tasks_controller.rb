@@ -1,6 +1,4 @@
 class TasksController < ApplicationController
-  LIST_ID = 1 # TODO: Temporarily hard-coded.
-  
   def new
     redirect_to tasks_path
   end
@@ -24,10 +22,10 @@ class TasksController < ApplicationController
   def index
     # Get the current list.
     @lists = List.all
-    @list = List.find(LIST_ID)
+    @list = List.find(getCurrentListID())
     
     # Determine how to sort the tasks.
-    sort = getSortFromParams
+    sort = getSortFromParams()
     @constrainedSort = (sort != Sort::NONE)
     if sort == Sort::NONE
       sort = Sort::PRIORITY # Default sort.
@@ -106,7 +104,7 @@ class TasksController < ApplicationController
   end
   
   def clearCompleted
-    Task.where(done: true).update_all(deleted: true)
+    Task.where(list_id: getCurrentListID(), done: true).update_all(deleted: true)
     success = true
 
     respond_to do |format|
@@ -150,7 +148,7 @@ class TasksController < ApplicationController
     task.title = row['Task']
     task.priority = row['Priority']
     task.category_id = Category.find_or_create_by(title: row['Category']).id
-    task.list_id = LIST_ID
+    task.list_id = getCurrentListID()
 
     begin
       if task.save
@@ -209,5 +207,9 @@ class TasksController < ApplicationController
     CREATED = 4
     DUE = 5
     BLOCKED = 6
+  end
+
+  def getCurrentListID
+    return cookies['list_id'] ? cookies['list_id'] : 1;
   end
 end
