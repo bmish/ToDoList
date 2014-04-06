@@ -17,24 +17,23 @@ a{
 
 #listTitleDiv{
 	background-color:rgb(238, 238, 238);
-	padding:10px;
+}
+
+.listTitleHeader, #listTitleHeaderNew{
+	display:inline-block;
+	padding:7px;
 }
 
 .listTitleHeader{
-	display:inline-block;
+	border-right-color:silver;
+	border-right-style:solid;
+	border-right-width:1px;
 }
 
-.listTitleHeaderSeparator, #listTitleHeaderNew{
-	display:inline-block;
-	
+#listTitleHeaderNew{
 	font-family:arial;
 	font-size:24px;
 	font-weight:bold;
-}
-
-.listTitleHeaderSeparator{
-	margin-left:5px;
-	margin-right:5px;
 }
 
 .listTitleHeaderText{
@@ -48,6 +47,7 @@ a{
 
 #options{
 	float:right;
+	padding:7px;
 }
 
 #listHeaders, .listSectionHeader{
