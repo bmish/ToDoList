@@ -62,7 +62,7 @@
 				<% end %>
 				<% if beginNewSectionCategory %>
 					<div class="listSectionCategory" data-category_id="<%= task.category_id %>">
-						<div class="listSectionHeader listSectionHeaderCategory" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>"><%= task.category_title %></div>
+						<div class="listSectionHeader listSectionHeaderCategory" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>"><%= task.category_title ? task.category_title : '[no category]' %></div>
 						<div class="listSectionItems" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>">
 				<% end %>
 
