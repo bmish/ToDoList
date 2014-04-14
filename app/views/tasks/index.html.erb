@@ -19,7 +19,7 @@
 			<div id="listTitleHeadersSection">
 				<div id="listTitleHeaders">
 					<% @lists.each do |list| %><!--
-						--><div class="listTitleHeader">
+						--><div class="listTitleHeader <%= if (list.id == @list.id); 'listTitleHeaderCurrent' end %>">
 							<%= link_to(list.title, list, class: 'listTitleHeaderText') %>
 							<% if @constrainedList && (list.id == @list.id) %>
 								<span class="removeConstraintLink"><%= link_to('[remove constraints]', tasks_path) %></span>
