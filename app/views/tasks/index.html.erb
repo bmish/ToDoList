@@ -16,16 +16,18 @@
 					<% end %>
 				</div>
 			</div>
-			<div id="listTitleHeaders">
-				<% @lists.each do |list| %><!--
-					--><div class="listTitleHeader">
-						<%= link_to(list.title, list, class: 'listTitleHeaderText') %>
-						<% if @constrainedList && (list.id == @list.id) %>
-							<span class="removeConstraintLink"><%= link_to('[remove constraints]', tasks_path) %></span>
-						<% end %>
-					</div><!--
-				--><% end %><!--
-				--><div id="listTitleHeaderNew"><%= link_to '+', lists_path, action: 'create', method: 'post', remote: true %></div>
+			<div id="listTitleHeadersSection">
+				<div id="listTitleHeaders">
+					<% @lists.each do |list| %><!--
+						--><div class="listTitleHeader">
+							<%= link_to(list.title, list, class: 'listTitleHeaderText') %>
+							<% if @constrainedList && (list.id == @list.id) %>
+								<span class="removeConstraintLink"><%= link_to('[remove constraints]', tasks_path) %></span>
+							<% end %>
+						</div><!--
+					--><% end %><!--
+				--></div><!--
+				--><div id="listTitleHeaderNew"><%= link_to '+', lists_path, action: 'create', method: 'post', remote: true, id: 'listTitleHeaderNewLink' %></div>
 			</div>
 		</div>
 		

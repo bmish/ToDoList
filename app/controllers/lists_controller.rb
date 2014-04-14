@@ -1,10 +1,17 @@
 class ListsController < ApplicationController
   def create
-    List.create(title: 'New list')
+    list = List.create(title: 'New list')
     success = true
 
+    response = {}
+    response["list"] = list
+
     respond_to do |format|
-        format.json { head (success ? :ok : :internal_server_error)}
+      if success
+        format.json { render :json => response }
+      else
+        format.json { head(:internal_server_error) }
+      end
     end
   end
 

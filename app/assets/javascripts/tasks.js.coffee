@@ -23,6 +23,11 @@ jQuery ->
 		$('#listItem_'+taskID).remove()
 		removeEmptyListSections()
 
+	listTitleHeaderNewLinkOnAJAXComplete = (e, data, status) ->
+		json = JSON.parse(data.responseText)
+		if json
+			$('#listTitleHeaders').append('<div class="listTitleHeader"><a class="listTitleHeaderText" href="/lists/'+json.list.id+'">'+json.list.title+'</a></div>'); # TODO: Avoid hard-coding list path?
+
 	listSectionHeaderTextOnClick = (event) ->
 		priority = $(event.target).data('priority')
 		category_id = $(event.target).data('category_id')
@@ -39,6 +44,7 @@ jQuery ->
 
 	$('.taskCheckbox').change(taskCheckboxOnChange)
 	$('.taskDelete[data-remote]').on('ajax:complete', taskDeleteOnAJAXComplete)
+	$('#listTitleHeaderNewLink[data-remote]').on('ajax:complete', listTitleHeaderNewLinkOnAJAXComplete)
 	$('.listSectionHeader').click(listSectionHeaderTextOnClick)
 	$('#task_due_tmp').datepicker({altField: '#task_due', altFormat: 'yy-mm-dd'}) # Use altField because Rails expects a certain format when creating the new task.
 	$('#formClearCompleted').submit(formClearCompletedOnSubmit)
