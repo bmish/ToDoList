@@ -20,6 +20,11 @@ class TasksController < ApplicationController
   end
   
   def index
+    if !verifyCurrentList()
+      head(:internal_server_error)
+      return
+    end
+
     # Get the current list.
     @lists = List.all
     @list = List.find(getCurrentListID())
@@ -211,5 +216,20 @@ class TasksController < ApplicationController
 
   def getCurrentListID
     return cookies['list_id'] ? cookies['list_id'] : 1;
+  end
+
+  def verifyCurrentList
+    if List.count == 0
+      return false
+    else
+      begin
+        list = List.find(getCurrentListID())
+      rescue ActiveRecord::RecordNotFound
+        list = List.first # Default to the first list.
+        cookies['list_id'] = list.id
+      end
+    end
+
+    return true
   end
 end
