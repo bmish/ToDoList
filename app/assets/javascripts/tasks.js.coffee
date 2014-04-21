@@ -11,12 +11,20 @@ jQuery ->
 			$('#category_'+taskID).addClass('taskCompleted')
 			$('#priority_'+taskID).addClass('taskCompleted')
 			$('#datecreated_'+taskID).addClass('taskCompleted')
+			$('#datedue_'+taskID).addClass('taskCompleted')
+			$('#blocked_'+taskID).addClass('taskCompleted')
+			$('#location_'+taskID).addClass('taskCompleted')
+			$('#frequency_'+taskID).addClass('taskCompleted')
 		else
 			$('#listItem_'+taskID).removeClass('listItemTaskCompleted')
 			$('#title_'+taskID).removeClass('taskCompleted')
 			$('#category_'+taskID).removeClass('taskCompleted')
 			$('#priority_'+taskID).removeClass('taskCompleted')
 			$('#datecreated_'+taskID).removeClass('taskCompleted')
+			$('#datedue_'+taskID).removeClass('taskCompleted')
+			$('#blocked_'+taskID).removeClass('taskCompleted')
+			$('#location_'+taskID).removeClass('taskCompleted')
+			$('#frequency_'+taskID).removeClass('taskCompleted')
 
 	taskDeleteOnAJAXComplete = (event) ->
 		taskID = $(event.target).data('id')
