@@ -8,6 +8,7 @@
 			--><div id="divNewDateCreated" class="listItemColumn listItemDateCreated"><%= Time.new.strftime("%-m/%-d") %></div><!--
 			--><div id="divNewDateDue" class="listItemColumn listItemDateDue"><%= f.text_field :due, :id => 'task_due_tmp' %><%= f.hidden_field :due %></div><!--
 			--><div id="divNewBlocked" class="listItemColumn listItemBlocked"><%= f.check_box :blocked %></div><!--
+			--><div id="divNewLocation" class="listItemColumn listItemLocation"><%= f.text_field :location %></div><!--
 			--><div id="divNewSave" class="listItemColumn listItemSave"><%= f.submit "+" %></div><!--
 			--><%= f.hidden_field :list_id, :value => @list.id %>
 		</div>

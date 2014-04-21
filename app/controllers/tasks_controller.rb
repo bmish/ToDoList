@@ -68,9 +68,15 @@ class TasksController < ApplicationController
       tasksQuery = tasksQuery.where(due: params[:due])
     end
 
+    @constrainedLocation = false
+    if params[:location] && !params[:location].empty?
+      @constrainedLocation = true
+      tasksQuery = tasksQuery.where(location: params[:location])
+    end
+
     @tasks = tasksQuery
     
-    @constrainedList = (@constrainedSort || @constrainedPriority || @constrainedCategory || @constrainedCreated || @constrainedDue)
+    @constrainedList = (@constrainedSort || @constrainedPriority || @constrainedCategory || @constrainedCreated || @constrainedDue || @constrainedLocation)
   end
   
   def edit
@@ -145,7 +151,7 @@ class TasksController < ApplicationController
   
   private
   def task_params
-    params.require(:task).permit(:title, :category_id, :priority, :notes, :list_id, :blocked, :due)
+    params.require(:task).permit(:title, :category_id, :priority, :notes, :list_id, :blocked, :due, :location)
   end
   
   def importCSVRow row
@@ -180,6 +186,8 @@ class TasksController < ApplicationController
       sort = Sort::DUE
     elsif params[:sort] == 'blocked'
       sort = Sort::BLOCKED
+    elsif params[:sort] == 'location'
+      sort = Sort::LOCATION
     else
       sort = Sort::NONE
     end
@@ -200,6 +208,8 @@ class TasksController < ApplicationController
       sql = 'tasks.due DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     elsif sort == Sort::BLOCKED
       sql = 'tasks.blocked DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
+    elsif sort == Sort::LOCATION
+      sql = 'LOWER(tasks.location), tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     end
     return sql
   end
@@ -212,6 +222,7 @@ class TasksController < ApplicationController
     CREATED = 4
     DUE = 5
     BLOCKED = 6
+    LOCATION = 7
   end
 
   def getCurrentListID
