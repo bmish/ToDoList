@@ -34,7 +34,7 @@
 		<div id="listItems">
 			<div id="listHeaders">
 				<div class="listItemColumn listItemCheckbox"></div><!--
-				--><div class="listItemColumn listItemTitle"><%= link_to('Task ('+@tasks.count.to_s+')', tasks_path(sort: 'task')) %></div><!--
+				--><div class="listItemColumn listItemTitle"><%= link_to('Task ('+@tasks.length.to_s+')', tasks_path(sort: 'task')) %></div><!--
 				--><div class="listItemColumn listItemCategory"><%= link_to('Category', tasks_path(sort: 'category')) %></div><!--
 				--><div class="listItemColumn listItemPriority"><%= link_to('P', tasks_path(sort: 'priority')) %></div><!--
 				--><div class="listItemColumn listItemDateCreated"><%= link_to('Created', tasks_path(sort: 'created')) %></div><!--
