@@ -1,4 +1,6 @@
 class Task < ActiveRecord::Base
+  enum frequency: [ :Once, :Daily, :Weekly, :Biweekly, :Monthly, :Quarterly, :Yearly ]
+
   belongs_to :list
   belongs_to :category
   before_validation :remove_whitespace
