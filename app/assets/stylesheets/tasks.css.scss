@@ -122,6 +122,10 @@ a{
 	width:100px;
 }
 
+.listItemDependee{
+	width:75px;
+}
+
 .listItemDelete, .listItemSave{
 	width:40px;
 }
@@ -144,15 +148,11 @@ a{
 	margin-right:0;
 }
 
-#task_title{
-	width:100%;
-}
-
 #task_due_tmp{
 	width:70px;
 }
 
-#task_location{
+#task_title, #task_location, #task_dependee{
 	width:100%;
 }
 

@@ -80,9 +80,15 @@ class TasksController < ApplicationController
       tasksQuery = tasksQuery.where(frequency: Task.frequencies[params[:frequency]])
     end
 
+    @constrainedDependee = false
+    if params[:dependee] && !params[:dependee].empty?
+      @constrainedDependee = true
+      tasksQuery = tasksQuery.where(dependee: params[:dependee])
+    end
+
     @tasks = tasksQuery
     
-    @constrainedList = (@constrainedSort || @constrainedPriority || @constrainedCategory || @constrainedCreated || @constrainedDue || @constrainedLocation || @constrainedFrequency)
+    @constrainedList = (@constrainedSort || @constrainedPriority || @constrainedCategory || @constrainedCreated || @constrainedDue || @constrainedLocation || @constrainedFrequency || @constrainedDependee)
   end
   
   def edit
@@ -157,7 +163,7 @@ class TasksController < ApplicationController
   
   private
   def task_params
-    params.require(:task).permit(:title, :category_id, :priority, :notes, :list_id, :blocked, :due, :location, :frequency)
+    params.require(:task).permit(:title, :category_id, :priority, :notes, :list_id, :blocked, :due, :location, :frequency, :dependee)
   end
   
   def importCSVRow row
@@ -196,6 +202,8 @@ class TasksController < ApplicationController
       sort = Sort::LOCATION
     elsif params[:sort] == 'frequency'
       sort = Sort::FREQUENCY
+    elsif params[:sort] == 'dependee'
+      sort = Sort::DEPENDEE
     else
       sort = Sort::NONE
     end
@@ -220,6 +228,8 @@ class TasksController < ApplicationController
       sql = 'LOWER(tasks.location), tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     elsif sort == Sort::FREQUENCY
       sql = 'tasks.frequency, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
+    elsif sort == Sort::DEPENDEE
+      sql = 'tasks.dependee, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     end
     return sql
   end
@@ -234,6 +244,7 @@ class TasksController < ApplicationController
     BLOCKED = 6
     LOCATION = 7
     FREQUENCY = 8
+    DEPENDEE = 9
   end
 
   def getCurrentListID

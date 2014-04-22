@@ -42,6 +42,7 @@
 				--><div class="listItemColumn listItemBlocked"><%= link_to('Blocked', tasks_path(sort: 'blocked')) %></div><!--
 				--><div class="listItemColumn listItemLocation"><%= link_to('Location', tasks_path(sort: 'location')) %></div><!--
 				--><div class="listItemColumn listItemFrequency"><%= link_to('Frequency', tasks_path(sort: 'frequency')) %></div><!--
+				--><div class="listItemColumn listItemDependee"><%= link_to('Dependee', tasks_path(sort: 'dependee')) %></div><!--
 				--><div class="listItemColumn listItemDelete"></div>
 			</div>
  
@@ -79,6 +80,7 @@
 				  --><div id="blocked_<%= task.id %>" class="listItemColumn listItemBlocked <%= if task.done; 'taskCompleted' end %>"><%= task.blocked ? 'Yes' : '' %></div><!--
 				  --><div id="location_<%= task.id %>" class="listItemColumn listItemLocation <%= if task.done; 'taskCompleted' end %>"><%= if task.location; link_to(task.location, tasks_path(location: task.location)) end %></div><!--
 				  --><div id="frequency_<%= task.id %>" class="listItemColumn listItemFrequency <%= if task.done; 'taskCompleted' end %>"><%= link_to(task.frequency, tasks_path(frequency: task.frequency)) %></div><!--
+				  --><div id="dependee_<%= task.id %>" class="listItemColumn listItemDependee <%= if task.done; 'taskCompleted' end %>"><%= if task.dependee; link_to(task.dependee, tasks_path(dependee: task.dependee)) end %></div><!--
 				  --><div class="listItemColumn listItemDelete"><%= link_to 'X', task_path(task), method: :delete, data: {confirm: 'Are you sure?', :id => task.id}, remote: true, class: 'taskDelete' %></div>
 			  	</div>
 
