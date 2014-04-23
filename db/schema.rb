@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140423014905) do
+ActiveRecord::Schema.define(version: 20140423061743) do
 
   create_table "categories", force: true do |t|
     t.string   "title"
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20140423014905) do
     t.boolean  "blocked",     default: false
     t.date     "due"
     t.string   "location"
-    t.integer  "frequency",   default: 0
+    t.integer  "frequency",   default: 1
     t.string   "dependee"
     t.date     "start"
   end

@@ -10,7 +10,7 @@
 			--><div id="divNewDateDue" class="listItemColumn listItemDateDue"><%= f.text_field :due, :id => 'task_due_tmp' %><%= f.hidden_field :due %></div><!--
 			--><div id="divNewBlocked" class="listItemColumn listItemBlocked"><%= f.check_box :blocked %></div><!--
 			--><div id="divNewLocation" class="listItemColumn listItemLocation"><%= f.text_field :location %></div><!--
-			--><div id="divNewFrequency" class="listItemColumn listItemFrequency"><%= f.select :frequency, options_for_select(Task.frequencies.keys) %></div><!--
+			--><div id="divNewFrequency" class="listItemColumn listItemFrequency"><%= f.select :frequency, options_for_select(Task.frequencies.keys, :selected => 'Once') %></div><!--
 			--><div id="divNewDependee" class="listItemColumn listItemDependee"><%= f.text_field :dependee %></div><!--
 			--><div id="divNewStatus" class="listItemColumn listItemStatus"></div><!--
 			--><div id="divNewSave" class="listItemColumn listItemSave"><%= f.submit "+" %></div><!--
