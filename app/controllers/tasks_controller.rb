@@ -174,10 +174,21 @@ class TasksController < ApplicationController
   
   def importCSVRow row
     task = Task.new
-    task.title = row['Task']
-    task.priority = row['Priority']
-    task.category_id = Category.find_or_create_by(title: row['Category']).id
+    if row['Task']; task.title = row['Task'] end
+    if row['Priority']; task.priority = row['Priority'] end
+    if row['Notes']; task.notes = row['Notes'] end
+    if row['Done']; task.done = row['Done'] end
+    #if row['Created at']; task.created_at = row['Created at'] end
+    #if row['Updated at']; task.updated_at = row['Updated at'] end
+    if row['Category']; task.category_id = Category.find_or_create_by(title: row['Category']).id end
     task.list_id = getCurrentListID()
+    if row['Deleted']; task.deleted = row['Deleted'] end
+    if row['Blocked']; task.blocked = row['Blocked'] end
+    #if row['Due']; task.due = row['Due'] end
+    if row['Location']; task.location = row['Location'] end
+    if row['Frequency']; task.frequency = row['Frequency'] end
+    if row['Dependee']; task.dependee = row['Dependee'] end
+    #if row['Start']; task.start = row['Start'] end
 
     begin
       if task.save
