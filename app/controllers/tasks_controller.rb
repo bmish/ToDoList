@@ -61,6 +61,12 @@ class TasksController < ApplicationController
       created = Time.strptime(params[:created], "%F")
       tasksQuery = tasksQuery.where(created_at: (created.midnight..(created.midnight + 1.day - 1.second)))
     end
+
+    @constrainedStart = false
+    if params[:start] && !params[:start].empty?
+      @constrainedStart = true
+      tasksQuery = tasksQuery.where(start: params[:start])
+    end
     
     @constrainedDue = false
     if params[:due] && !params[:due].empty?
@@ -88,7 +94,7 @@ class TasksController < ApplicationController
 
     @tasks = tasksQuery
     
-    @constrainedList = (@constrainedSort || @constrainedPriority || @constrainedCategory || @constrainedCreated || @constrainedDue || @constrainedLocation || @constrainedFrequency || @constrainedDependee)
+    @constrainedList = (@constrainedSort || @constrainedPriority || @constrainedCategory || @constrainedCreated || @constrainedStart || @constrainedDue || @constrainedLocation || @constrainedFrequency || @constrainedDependee)
   end
   
   def edit
@@ -163,7 +169,7 @@ class TasksController < ApplicationController
   
   private
   def task_params
-    params.require(:task).permit(:title, :category_id, :priority, :notes, :list_id, :blocked, :due, :location, :frequency, :dependee)
+    params.require(:task).permit(:title, :category_id, :priority, :notes, :list_id, :blocked, :start, :due, :location, :frequency, :dependee)
   end
   
   def importCSVRow row
@@ -194,6 +200,8 @@ class TasksController < ApplicationController
       sort = Sort::TASK
     elsif params[:sort] == 'created'
       sort = Sort::CREATED
+    elsif params[:sort] == 'start'
+      sort = Sort::START
     elsif params[:sort] == 'due'
       sort = Sort::DUE
     elsif params[:sort] == 'blocked'
@@ -220,6 +228,8 @@ class TasksController < ApplicationController
       sql = 'LOWER(tasks.title), tasks.priority, LOWER(categories.title)'
     elsif sort == Sort::CREATED
       sql = 'tasks.created_at DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
+    elsif sort == Sort::START
+      sql = 'tasks.start DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     elsif sort == Sort::DUE
       sql = 'tasks.due DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     elsif sort == Sort::BLOCKED
@@ -240,11 +250,12 @@ class TasksController < ApplicationController
     CATEGORY = 2
     TASK = 3
     CREATED = 4
-    DUE = 5
-    BLOCKED = 6
-    LOCATION = 7
-    FREQUENCY = 8
-    DEPENDEE = 9
+    START = 5
+    DUE = 6
+    BLOCKED = 7
+    LOCATION = 8
+    FREQUENCY = 9
+    DEPENDEE = 10
   end
 
   def getCurrentListID

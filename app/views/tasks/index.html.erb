@@ -34,10 +34,11 @@
 		<div id="listItems">
 			<div id="listHeaders">
 				<div class="listItemColumn listItemCheckbox"></div><!--
-				--><div class="listItemColumn listItemTitle"><%= link_to('Task ('+@tasks.length.to_s+')', tasks_path(sort: 'task')) %></div><!--
+				--><div class="listItemColumn listItemTitle"><%= link_to('Task (0)', tasks_path(sort: 'task')) %></div><!--
 				--><div class="listItemColumn listItemCategory"><%= link_to('Category', tasks_path(sort: 'category')) %></div><!--
 				--><div class="listItemColumn listItemPriority"><%= link_to('P', tasks_path(sort: 'priority')) %></div><!--
 				--><div class="listItemColumn listItemDateCreated"><%= link_to('Created', tasks_path(sort: 'created')) %></div><!--
+				--><div class="listItemColumn listItemDateStart"><%= link_to('Start', tasks_path(sort: 'start')) %></div><!--
 				--><div class="listItemColumn listItemDateDue"><%= link_to('Due', tasks_path(sort: 'due')) %></div><!--
 				--><div class="listItemColumn listItemBlocked"><%= link_to('Blocked', tasks_path(sort: 'blocked')) %></div><!--
 				--><div class="listItemColumn listItemLocation"><%= link_to('Location', tasks_path(sort: 'location')) %></div><!--
@@ -76,6 +77,7 @@
 				  --><div id="category_<%= task.id %>" class="listItemColumn listItemCategory <%= if task.done; 'taskCompleted' end %>"><%= if task.category_title; link_to(task.category_title, tasks_path(category: task.category_id)) end %></div><!--
 				  --><div id="priority_<%= task.id %>" class="listItemColumn listItemPriority <%= if task.done; 'taskCompleted' end %>"><%= link_to(task.priority, tasks_path(priority: task.priority)) %></div><!--
 				  --><div id="datecreated_<%= task.id %>" class="listItemColumn listItemDateCreated <%= if task.done; 'taskCompleted' end %>"><time datetime="<%= task.created_at.strftime("%FT%T%:z") %>"><%= link_to(task.created_at.strftime("%-m/%-d"), tasks_path(created: task.created_at.strftime("%F"))) %></time></div><!--
+				  --><div id="datestart_<%= task.id %>" class="listItemColumn listItemDateStart <%= if task.done; 'taskCompleted' end %>"><% if task.start; %><time datetime="<%= task.start.strftime("%F") %>"><%= link_to(task.start.strftime("%-m/%-d"), tasks_path(start: task.start.strftime("%F"))) %></time><% end %></div><!--
 				  --><div id="datedue_<%= task.id %>" class="listItemColumn listItemDateDue <%= if task.done; 'taskCompleted' end %>"><% if task.due; %><time datetime="<%= task.due.strftime("%F") %>"><%= link_to(task.due.strftime("%-m/%-d"), tasks_path(due: task.due.strftime("%F"))) %></time><% end %></div><!--
 				  --><div id="blocked_<%= task.id %>" class="listItemColumn listItemBlocked <%= if task.done; 'taskCompleted' end %>"><%= task.blocked ? 'Yes' : '' %></div><!--
 				  --><div id="location_<%= task.id %>" class="listItemColumn listItemLocation <%= if task.done; 'taskCompleted' end %>"><%= if task.location; link_to(task.location, tasks_path(location: task.location)) end %></div><!--
