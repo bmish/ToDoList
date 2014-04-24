@@ -20,12 +20,8 @@ class TasksController < ApplicationController
   end
   
   def index
-    if !verifyCurrentList()
-      head(:internal_server_error)
-      return
-    end
-
     # Get the current list.
+    verifyCurrentList()
     @lists = List.all
     @list = List.find(getCurrentListID())
     
@@ -275,7 +271,10 @@ class TasksController < ApplicationController
 
   def verifyCurrentList
     if List.count == 0
-      return false
+      list = List.new({title: 'First List'})
+      if list.save
+        cookies['list_id'] = list.id
+      end
     else
       begin
         list = List.find(getCurrentListID())
@@ -284,7 +283,5 @@ class TasksController < ApplicationController
         cookies['list_id'] = list.id
       end
     end
-
-    return true
   end
 end
