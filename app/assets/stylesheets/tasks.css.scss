@@ -94,6 +94,10 @@ a{
 	padding-right:0px !important;
 }
 
+.listItemTitle{
+	text-overflow:ellipsis;
+}
+
 .listItemStatus{
 	width:100px;
 }
@@ -140,10 +144,15 @@ a{
 	-moz-box-sizing:border-box;
 	vertical-align:top;
 	padding:7px;
+
+	// Prevent table cells from overflowing.
+	overflow:hidden;
+	white-space:nowrap;
 }
 
 #listHeaders, #listNewForm, .listItem, {
 	display:table;
+	table-layout:fixed;
 	width:100%;
 }
 
