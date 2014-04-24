@@ -10,7 +10,9 @@ class Task < ActiveRecord::Base
   validate :due_date_cannot_be_after_start_date
 
   def status
-    if self.blocked
+    if self.done
+      return 'Done'
+    elsif self.blocked
       return 'Blocked'
     elsif self.start && self.start > Date.today
       return 'Waiting'
