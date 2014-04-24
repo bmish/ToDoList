@@ -98,10 +98,6 @@ a{
 	text-overflow:ellipsis;
 }
 
-.listItemStatus{
-	width:100px;
-}
-
 .listItemCategory{
 	width:100px;
 }
@@ -132,6 +128,10 @@ a{
 
 .listItemDependee{
 	width:75px;
+}
+
+.listItemStatus{
+	width:100px;
 }
 
 .listItemDelete, .listItemSave{
