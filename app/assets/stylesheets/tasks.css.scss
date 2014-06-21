@@ -152,7 +152,7 @@ a{
 	white-space:nowrap;
 }
 
-#listHeaders, #listNewForm, .listItem, {
+#listHeaders, .listItem, {
 	display:table;
 	table-layout:fixed;
 	width:100%;
@@ -164,9 +164,21 @@ a{
 }
 
 #task_title, #task_category_id, #task_priority, #task_start_tmp, #task_due_tmp, #task_location, #task_frequency, #task_dependee{
-	width:100%;
 	font-size:10pt;
 	font-family:Arial;
+}
+
+#task_start_tmp, #task_due_tmp{
+	width:70px;
+}
+
+#listNew{
+	font-size:10pt;
+	font-family:Arial;
+}
+
+#listNewFormSubmit{
+	display:none;
 }
 
 #errorList{
@@ -185,4 +197,13 @@ a{
 
 #formClearCompleted{
 	display:inline-block;
+}
+
+.p{
+	display:block;
+	margin: 1.12em 0;
+}
+
+label.labelForRequiredField:after{
+	content: "*";
 }

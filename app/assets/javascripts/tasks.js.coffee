@@ -56,11 +56,23 @@ jQuery ->
 		$('.listItemTaskCompleted').remove()
 		removeEmptyListSections()
 
+	newTaskButtonOnClick = (event) ->
+		$('#newTaskDialog').dialog('open')
+
+	newTaskDialogOnSave = (event) ->
+		$('#listNewFormSubmit').click()
+
+	formNewTaskOnSubmit = (event) ->
+		$('#newTaskDialog').dialog('close')
+
 	$('.taskCheckbox').change(taskCheckboxOnChange)
 	$('.taskDelete[data-remote]').on('ajax:complete', taskDeleteOnAJAXComplete)
 	$('#listTitleHeaderNewLink[data-remote]').on('ajax:complete', listTitleHeaderNewLinkOnAJAXComplete)
 	$('.listSectionHeader').click(listSectionHeaderTextOnClick)
 	$('#formClearCompleted').submit(formClearCompletedOnSubmit)
+	$('#newTaskButton').click(newTaskButtonOnClick)
+	$('#newTaskDialog').dialog({ autoOpen: false, buttons: [{text: 'Save', click: newTaskDialogOnSave}] })
+	$('#formNewTask').submit(formNewTaskOnSubmit)
 
 	# Use altField because Rails expects a certain format when creating the new task.
 	$('#task_start_tmp').datepicker({altField: '#task_start', altFormat: 'yy-mm-dd'})

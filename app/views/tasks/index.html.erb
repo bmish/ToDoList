@@ -4,6 +4,7 @@
 	<div id="centerColumn">
 		<div id="listTitleDiv">
 			<div id="options">
+				<button id="newTaskButton">New</button>
 				<%= button_to "Clear Completed", { action: "clearCompleted" }, remote: true, form: { id: "formClearCompleted" } %>
 
 				<div id="importSection">
@@ -30,7 +31,7 @@
 				--><div id="listTitleHeaderNew"><%= link_to '+', lists_path, action: 'create', method: 'post', remote: true, id: 'listTitleHeaderNewLink' %></div>
 			</div>
 		</div>
-		
+
 		<div id="listItems">
 			<div id="listHeaders">
 				<div class="listItemColumn listItemCheckbox"></div><!--
@@ -47,8 +48,6 @@
 				--><div class="listItemColumn listItemStatus">Status</div><!--
 				--><div class="listItemColumn listItemDelete"></div>
 			</div>
- 
- 		   	<%= render 'form' %>
 
 			<% prevTask = nil %>
 		    <% @tasks.each do |task| %>
@@ -101,3 +100,12 @@
 	</div>
 </div>
 
+<div id="newTaskDialog" title="New Task">
+<%= render 'form' %>
+</div>
+
+<% if @reshowNewTaskForm; %>
+<script type="text/javascript">
+     $(document).ready(function(){ $('#newTaskDialog').dialog('open') });
+</script>
+<% end %>

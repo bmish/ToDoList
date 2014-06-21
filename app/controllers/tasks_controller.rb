@@ -5,11 +5,13 @@ class TasksController < ApplicationController
   
   def create
     @task = Task.new(task_params)
+    @reshowNewTaskForm = false
     if @task.save
       @task = nil;
       index()
       render :index
     else
+      @reshowNewTaskForm = true
       index()
       render :index
     end
