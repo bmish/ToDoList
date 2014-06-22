@@ -20,6 +20,8 @@ class Task < ActiveRecord::Base
       return 'Actionable'
     elsif self.due && Date.today > self.due
       return 'Overdue'
+    elsif self.underway
+      return 'Underway'
     else
       return 'Actionable'
     end

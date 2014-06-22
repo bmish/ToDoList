@@ -5,7 +5,7 @@
 			<p><%= f.label :category_id %><br><%= select("task", "category_id", Category.order(:title).collect {|c| [ c.title, c.id ] }, { include_blank: true }) %></p>
 			<div class="p"><div style="display:inline-block"><%= f.label :priority %><br><%= f.select :priority, options_for_select(["0", "1", "2", "3"], :disabled => "Priority", :selected => "3") %></div> <div style="display:inline-block"><%= f.label :frequency %><br><%= f.select :frequency, options_for_select(Task.frequencies.keys, :selected => 'Once') %></div></div>
 			<div class="p"><div style="display:inline-block"><%= f.label :start %><br><%= f.text_field :start, :id => 'task_start_tmp' %><%= f.hidden_field :start %></div> <div style="display:inline-block"><%= f.label :due %><br><%= f.text_field :due, :id => 'task_due_tmp' %><%= f.hidden_field :due %></div></div>
-			<p><%= f.check_box :blocked %> <%= f.label :blocked %></p>
+			<div class="p"><div style="display:inline-block"><%= f.check_box :underway %> <%= f.label :underway %> <div style="display:inline-block"><%= f.check_box :blocked %> <%= f.label :blocked %></div>
 			<p><%= f.label :dependee %><br><%= f.text_field :dependee %></p>
 			<p><%= f.label :location %><br><%= f.text_field :location %></p>
 			<%= f.hidden_field :list_id, :value => @list.id %>

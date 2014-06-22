@@ -41,6 +41,7 @@
 				--><div class="listItemColumn listItemDateCreated"><%= link_to('Created', tasks_path(sort: 'created')) %></div><!--
 				--><div class="listItemColumn listItemDateStart"><%= link_to('Start', tasks_path(sort: 'start')) %></div><!--
 				--><div class="listItemColumn listItemDateDue"><%= link_to('Due', tasks_path(sort: 'due')) %></div><!--
+				--><div class="listItemColumn listItemUnderway"><%= link_to('Underway', tasks_path(sort: 'underway')) %></div><!--
 				--><div class="listItemColumn listItemBlocked"><%= link_to('Blocked', tasks_path(sort: 'blocked')) %></div><!--
 				--><div class="listItemColumn listItemLocation"><%= link_to('Location', tasks_path(sort: 'location')) %></div><!--
 				--><div class="listItemColumn listItemFrequency"><%= link_to('Frequency', tasks_path(sort: 'frequency')) %></div><!--
@@ -79,6 +80,7 @@
 				  --><div id="datecreated_<%= task.id %>" class="listItemColumn listItemDateCreated <%= if task.done; 'taskCompleted' end %>"><time datetime="<%= task.created_at.strftime("%FT%T%:z") %>"><%= link_to(task.created_at.strftime("%-m/%-d"), tasks_path(created: task.created_at.strftime("%F"))) %></time></div><!--
 				  --><div id="datestart_<%= task.id %>" class="listItemColumn listItemDateStart <%= if task.done; 'taskCompleted' end %>"><% if task.start; %><time datetime="<%= task.start.strftime("%F") %>"><%= link_to(task.start.strftime("%-m/%-d"), tasks_path(start: task.start.strftime("%F"))) %></time><% end %></div><!--
 				  --><div id="datedue_<%= task.id %>" class="listItemColumn listItemDateDue <%= if task.done; 'taskCompleted' end %>"><% if task.due; %><time datetime="<%= task.due.strftime("%F") %>"><%= link_to(task.due.strftime("%-m/%-d"), tasks_path(due: task.due.strftime("%F"))) %></time><% end %></div><!--
+				  --><div id="underway_<%= task.id %>" class="listItemColumn listItemUnderway <%= if task.done; 'taskCompleted' end %>"><%= task.underway ? 'Yes' : '' %></div><!--
 				  --><div id="blocked_<%= task.id %>" class="listItemColumn listItemBlocked <%= if task.done; 'taskCompleted' end %>"><%= task.blocked ? 'Yes' : '' %></div><!--
 				  --><div id="location_<%= task.id %>" class="listItemColumn listItemLocation <%= if task.done; 'taskCompleted' end %>"><%= if task.location; link_to(task.location, tasks_path(location: task.location)) end %></div><!--
 				  --><div id="frequency_<%= task.id %>" class="listItemColumn listItemFrequency <%= if task.done; 'taskCompleted' end %>"><%= link_to(task.frequency, tasks_path(frequency: task.frequency)) %></div><!--

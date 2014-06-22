@@ -167,7 +167,7 @@ class TasksController < ApplicationController
   
   private
   def task_params
-    params.require(:task).permit(:title, :category_id, :priority, :notes, :list_id, :blocked, :start, :due, :location, :frequency, :dependee)
+    params.require(:task).permit(:title, :category_id, :priority, :notes, :list_id, :underway, :blocked, :start, :due, :location, :frequency, :dependee)
   end
   
   def importCSVRow row
@@ -181,6 +181,7 @@ class TasksController < ApplicationController
     if row['Category']; task.category_id = Category.find_or_create_by(title: row['Category']).id end
     task.list_id = getCurrentListID()
     if row['Deleted']; task.deleted = row['Deleted'] end
+    if row['Underway']; task.underway = row['Underway'] end
     if row['Blocked']; task.blocked = row['Blocked'] end
     #if row['Due']; task.due = row['Due'] end
     if row['Location']; task.location = row['Location'] end
@@ -213,6 +214,8 @@ class TasksController < ApplicationController
       sort = Sort::START
     elsif params[:sort] == 'due'
       sort = Sort::DUE
+    elsif params[:sort] == 'underway'
+      sort = Sort::UNDERWAY
     elsif params[:sort] == 'blocked'
       sort = Sort::BLOCKED
     elsif params[:sort] == 'location'
@@ -241,6 +244,8 @@ class TasksController < ApplicationController
       sql = 'tasks.start DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     elsif sort == Sort::DUE
       sql = 'tasks.due DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
+    elsif sort == Sort::UNDERWAY
+      sql = 'tasks.underway DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     elsif sort == Sort::BLOCKED
       sql = 'tasks.blocked DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     elsif sort == Sort::LOCATION
@@ -261,10 +266,11 @@ class TasksController < ApplicationController
     CREATED = 4
     START = 5
     DUE = 6
-    BLOCKED = 7
-    LOCATION = 8
-    FREQUENCY = 9
-    DEPENDEE = 10
+    UNDERWAY = 7
+    BLOCKED = 8
+    LOCATION = 9
+    FREQUENCY = 10
+    DEPENDEE = 11
   end
 
   def getCurrentListID
