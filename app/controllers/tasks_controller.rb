@@ -201,33 +201,48 @@ class TasksController < ApplicationController
   end
 
   def getSortFromParams
-    sort = nil
-    if params[:sort] == 'task'
-      sort = Column::TASK
-    elsif params[:sort] == 'category'
-      sort = Column::CATEGORY
-    elsif params[:sort] == 'priority'
-      sort = Column::PRIORITY
-    elsif params[:sort] == 'created'
-      sort = Column::CREATED
-    elsif params[:sort] == 'start'
-      sort = Column::START
-    elsif params[:sort] == 'due'
-      sort = Column::DUE
-    elsif params[:sort] == 'underway'
-      sort = Column::UNDERWAY
-    elsif params[:sort] == 'blocked'
-      sort = Column::BLOCKED
-    elsif params[:sort] == 'location'
-      sort = Column::LOCATION
-    elsif params[:sort] == 'frequency'
-      sort = Column::FREQUENCY
-    elsif params[:sort] == 'dependee'
-      sort = Column::DEPENDEE
-    else
-      sort = Column::NONE
+    column = getColumnFromString(params[:sort])
+    if column == Column::STATUS
+      # Sorting by this column not supported.
+      column == Column::NONE
     end
-    return sort
+    return column
+  end
+
+  def getColumnFromString str
+    if str
+      str = str.downcase
+    end
+
+    column = nil
+    if str == 'task'
+      column = Column::TASK
+    elsif str == 'category'
+      column = Column::CATEGORY
+    elsif str == 'priority'
+      column = Column::PRIORITY
+    elsif str == 'created'
+      column = Column::CREATED
+    elsif str == 'start'
+      column = Column::START
+    elsif str == 'due'
+      column = Column::DUE
+    elsif str == 'underway'
+      column = Column::UNDERWAY
+    elsif str == 'blocked'
+      column = Column::BLOCKED
+    elsif str == 'location'
+      column = Column::LOCATION
+    elsif str == 'frequency'
+      column = Column::FREQUENCY
+    elsif str == 'dependee'
+      column = Column::DEPENDEE
+    elsif str == 'status'
+      column = Column::STATUS
+    else
+      column = Column::NONE
+    end
+    return column
   end
 
   def getSQLForSort sort
