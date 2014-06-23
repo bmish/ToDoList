@@ -29,16 +29,16 @@ class TasksController < ApplicationController
     
     # Determine how to sort the tasks.
     sort = getSortFromParams()
-    @constrainedSort = (sort != Sort::NONE)
-    if sort == Sort::NONE
-      sort = Sort::PRIORITY # Default sort.
+    @constrainedSort = (sort != Column::NONE)
+    if sort == Column::NONE
+      sort = Column::PRIORITY # Default sort.
     end
     sqlSort = getSQLForSort(sort)
 
     tasksQuery = Task.joins('LEFT JOIN categories ON tasks.category_id = categories.id').order(sqlSort).where(list_id: @list.id).where(deleted: false).select("tasks.*, categories.title as category_title")
 
-    @showPriorityHeaders = (sort == Sort::PRIORITY) && !(params[:priorityHeaders] == 'false')
-    @showCategoryHeaders = (sort == Sort::PRIORITY) && !(params[:categoryHeaders] == 'false')
+    @showPriorityHeaders = (sort == Column::PRIORITY) && !(params[:priorityHeaders] == 'false')
+    @showCategoryHeaders = (sort == Column::PRIORITY) && !(params[:categoryHeaders] == 'false')
 
     @constrainedPriority = false
     if params[:priority] && params[:priority].to_i >= 0 && params[:priority].to_i <= 3
@@ -202,67 +202,67 @@ class TasksController < ApplicationController
 
   def getSortFromParams
     sort = nil
-    if params[:sort] == 'priority'
-      sort = Sort::PRIORITY
+    if params[:sort] == 'task'
+      sort = Column::TASK
     elsif params[:sort] == 'category'
-      sort = Sort::CATEGORY
-    elsif params[:sort] == 'task'
-      sort = Sort::TASK
+      sort = Column::CATEGORY
+    elsif params[:sort] == 'priority'
+      sort = Column::PRIORITY
     elsif params[:sort] == 'created'
-      sort = Sort::CREATED
+      sort = Column::CREATED
     elsif params[:sort] == 'start'
-      sort = Sort::START
+      sort = Column::START
     elsif params[:sort] == 'due'
-      sort = Sort::DUE
+      sort = Column::DUE
     elsif params[:sort] == 'underway'
-      sort = Sort::UNDERWAY
+      sort = Column::UNDERWAY
     elsif params[:sort] == 'blocked'
-      sort = Sort::BLOCKED
+      sort = Column::BLOCKED
     elsif params[:sort] == 'location'
-      sort = Sort::LOCATION
+      sort = Column::LOCATION
     elsif params[:sort] == 'frequency'
-      sort = Sort::FREQUENCY
+      sort = Column::FREQUENCY
     elsif params[:sort] == 'dependee'
-      sort = Sort::DEPENDEE
+      sort = Column::DEPENDEE
     else
-      sort = Sort::NONE
+      sort = Column::NONE
     end
     return sort
   end
 
   def getSQLForSort sort
     sql = ''
-    if sort == Sort::PRIORITY
-      sql = 'tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Sort::CATEGORY
-      sql = 'LOWER(categories.title), tasks.priority, LOWER(tasks.title)'
-    elsif sort == Sort::TASK
+    if sort == Column::TASK
       sql = 'LOWER(tasks.title), tasks.priority, LOWER(categories.title)'
-    elsif sort == Sort::CREATED
+    elsif sort == Column::CATEGORY
+      sql = 'LOWER(categories.title), tasks.priority, LOWER(tasks.title)'
+    elsif sort == Column::PRIORITY
+      sql = 'tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
+    elsif sort == Column::CREATED
       sql = 'tasks.created_at DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Sort::START
+    elsif sort == Column::START
       sql = 'tasks.start DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Sort::DUE
+    elsif sort == Column::DUE
       sql = 'tasks.due DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Sort::UNDERWAY
+    elsif sort == Column::UNDERWAY
       sql = 'tasks.underway DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Sort::BLOCKED
+    elsif sort == Column::BLOCKED
       sql = 'tasks.blocked DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Sort::LOCATION
+    elsif sort == Column::LOCATION
       sql = 'LOWER(tasks.location), tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Sort::FREQUENCY
+    elsif sort == Column::FREQUENCY
       sql = 'tasks.frequency, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Sort::DEPENDEE
+    elsif sort == Column::DEPENDEE
       sql = 'tasks.dependee, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
     end
     return sql
   end
 
-  module Sort
+  module Column
     NONE = 0
-    PRIORITY = 1
+    TASK = 1
     CATEGORY = 2
-    TASK = 3
+    PRIORITY = 3
     CREATED = 4
     START = 5
     DUE = 6
@@ -271,6 +271,7 @@ class TasksController < ApplicationController
     LOCATION = 9
     FREQUENCY = 10
     DEPENDEE = 11
+    STATUS = 12
   end
 
   def getCurrentListID
