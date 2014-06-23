@@ -93,6 +93,8 @@ class TasksController < ApplicationController
     @tasks = tasksQuery
     
     @constrainedList = (@constrainedSort || @constrainedPriority || @constrainedCategory || @constrainedCreated || @constrainedStart || @constrainedDue || @constrainedLocation || @constrainedFrequency || @constrainedDependee)
+
+    @showAllColumns = params[:columns] == 'all' || @constrainedList
   end
   
   def edit
@@ -308,4 +310,17 @@ class TasksController < ApplicationController
       end
     end
   end
+
+  def shouldDisplayColumn columnStr
+    column = getColumnFromString(columnStr)
+    if @showAllColumns
+      return true
+    elsif column == Column::TASK || column == Column::STATUS
+      # The two essential columns
+      return true
+    else
+      return false
+    end
+  end
+  helper_method :shouldDisplayColumn
 end
