@@ -16,10 +16,6 @@ a{
 	margin:0 auto;
 }
 
-#listTitleDiv{
-	background-color:rgb(238, 238, 238);
-}
-
 #listTitleHeaders{
 	display:inline-block;
 }
@@ -30,7 +26,7 @@ a{
 }
 
 .listTitleHeader{
-	border-right-color:silver;
+	border-right-color:rgb(220, 220, 220);
 	border-right-style:solid;
 	border-right-width:1px;
 }
