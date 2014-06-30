@@ -162,6 +162,10 @@ a{
 	width:100%;
 }
 
+.listItemTaskOverdue{
+	color:red;
+}
+
 #divNewCategory > select, #divNewPriority > select, #divNewDateDue > input, #divNewSave > input{
 	margin-left:0;
 	margin-right:0;
