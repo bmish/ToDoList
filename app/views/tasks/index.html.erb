@@ -33,6 +33,7 @@
 		</div>
 
 		<div id="listItems">
+			<% if @showAllColumns %>
 			<div id="listHeaders">
 				<div class="listItemColumn listItemCheckbox"></div><!--
 				--><% if shouldDisplayColumn('task') %><div class="listItemColumn listItemTitle"><%= link_to('Task (0)', tasks_path(sort: 'task')) %></div><% end %><!--
@@ -49,6 +50,7 @@
 				--><% if shouldDisplayColumn('status') %><div class="listItemColumn listItemStatus">Status</div><% end %><!--
 				--><div class="listItemColumn listItemDelete"></div>
 			</div>
+			<% end %>
 
 			<% prevTask = nil %>
 		    <% @tasks.each do |task| %>
