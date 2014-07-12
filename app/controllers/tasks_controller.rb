@@ -178,18 +178,19 @@ class TasksController < ApplicationController
     if row['Priority']; task.priority = row['Priority'] end
     if row['Notes']; task.notes = row['Notes'] end
     if row['Done']; task.done = row['Done'] end
-    #if row['Created at']; task.created_at = row['Created at'] end
-    #if row['Updated at']; task.updated_at = row['Updated at'] end
+    if row['Deleted']; task.done = row['Deleted'] end
+    if row['Created']; task.created_at = Date.parse(row['Created']) end
+    if row['Updated']; task.updated_at = Date.parse(row['Updated']) end
     if row['Category']; task.category_id = Category.find_or_create_by(title: row['Category']).id end
-    task.list_id = getCurrentListID()
     if row['Deleted']; task.deleted = row['Deleted'] end
     if row['Underway']; task.underway = row['Underway'] end
     if row['Blocked']; task.blocked = row['Blocked'] end
-    #if row['Due']; task.due = row['Due'] end
+    if row['Start']; task.start = Date.parse(row['Start']) end
+    if row['Due']; task.due = Date.parse(row['Due']) end
     if row['Location']; task.location = row['Location'] end
     if row['Frequency']; task.frequency = row['Frequency'] end
     if row['Dependee']; task.dependee = row['Dependee'] end
-    #if row['Start']; task.start = row['Start'] end
+    task.list_id = getCurrentListID()
 
     begin
       if task.save
