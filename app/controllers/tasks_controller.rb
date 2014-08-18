@@ -40,60 +40,10 @@ class TasksController < ApplicationController
     @showPriorityHeaders = (sort == Column::PRIORITY) && !(params[:priorityHeaders] == 'false')
     @showCategoryHeaders = (sort == Column::PRIORITY) && !(params[:categoryHeaders] == 'false')
 
-    @constrainedPriority = false
-    if params[:priority] && params[:priority].to_i >= 0 && params[:priority].to_i <= 3
-      @constrainedPriority = true
-      tasksQuery = tasksQuery.where(priority: params[:priority].to_i)
-    end
-
-    @constrainedCategory = false
-    if params[:category] && params[:category].to_i >= 1
-      @constrainedCategory = true
-      tasksQuery = tasksQuery.where(category_id: params[:category].to_i)
-      @showCategoryHeaders = false # It's unnecessary to show category headers when we are constrained to one category.
-    end
-    
-    @constrainedCreated = false
-    if params[:created] && !params[:created].empty?
-      @constrainedCreated = true
-      created = Time.strptime(params[:created], "%F")
-      tasksQuery = tasksQuery.where(created_at: (created.midnight..(created.midnight + 1.day - 1.second)))
-    end
-
-    @constrainedStart = false
-    if params[:start] && !params[:start].empty?
-      @constrainedStart = true
-      tasksQuery = tasksQuery.where(start: params[:start])
-    end
-    
-    @constrainedDue = false
-    if params[:due] && !params[:due].empty?
-      @constrainedDue = true
-      tasksQuery = tasksQuery.where(due: params[:due])
-    end
-
-    @constrainedLocation = false
-    if params[:location] && !params[:location].empty?
-      @constrainedLocation = true
-      tasksQuery = tasksQuery.where(location: params[:location])
-    end
-
-    @constrainedFrequency = false
-    if params[:frequency] && !params[:frequency].empty?
-      @constrainedFrequency = true
-      tasksQuery = tasksQuery.where(frequency: Task.frequencies[params[:frequency]])
-    end
-
-    @constrainedDependee = false
-    if params[:dependee] && !params[:dependee].empty?
-      @constrainedDependee = true
-      tasksQuery = tasksQuery.where(dependee: params[:dependee])
-    end
+    tasksQuery = checkConstraints(tasksQuery)
 
     @tasks = tasksQuery
     
-    @constrainedList = (@constrainedSort || @constrainedPriority || @constrainedCategory || @constrainedCreated || @constrainedStart || @constrainedDue || @constrainedLocation || @constrainedFrequency || @constrainedDependee)
-
     @showAllColumns = params[:columns] == 'all' || @constrainedList
   end
   
@@ -172,6 +122,62 @@ class TasksController < ApplicationController
     params.require(:task).permit(:title, :category_id, :priority, :notes, :list_id, :underway, :blocked, :start, :due, :location, :frequency, :dependee)
   end
   
+  def checkConstraints tasksQuery
+    @constrainedPriority = false
+    if params[:priority] && params[:priority].to_i >= 0 && params[:priority].to_i <= 3
+      @constrainedPriority = true
+      tasksQuery = tasksQuery.where(priority: params[:priority].to_i)
+    end
+
+    @constrainedCategory = false
+    if params[:category] && params[:category].to_i >= 1
+      @constrainedCategory = true
+      tasksQuery = tasksQuery.where(category_id: params[:category].to_i)
+      @showCategoryHeaders = false # It's unnecessary to show category headers when we are constrained to one category.
+    end
+
+    @constrainedCreated = false
+    if params[:created] && !params[:created].empty?
+      @constrainedCreated = true
+      created = Time.strptime(params[:created], "%F")
+      tasksQuery = tasksQuery.where(created_at: (created.midnight..(created.midnight + 1.day - 1.second)))
+    end
+
+    @constrainedStart = false
+    if params[:start] && !params[:start].empty?
+      @constrainedStart = true
+      tasksQuery = tasksQuery.where(start: params[:start])
+    end
+
+    @constrainedDue = false
+    if params[:due] && !params[:due].empty?
+      @constrainedDue = true
+      tasksQuery = tasksQuery.where(due: params[:due])
+    end
+
+    @constrainedLocation = false
+    if params[:location] && !params[:location].empty?
+      @constrainedLocation = true
+      tasksQuery = tasksQuery.where(location: params[:location])
+    end
+
+    @constrainedFrequency = false
+    if params[:frequency] && !params[:frequency].empty?
+      @constrainedFrequency = true
+      tasksQuery = tasksQuery.where(frequency: Task.frequencies[params[:frequency]])
+    end
+
+    @constrainedDependee = false
+    if params[:dependee] && !params[:dependee].empty?
+      @constrainedDependee = true
+      tasksQuery = tasksQuery.where(dependee: params[:dependee])
+    end
+
+    @constrainedList = (@constrainedSort || @constrainedPriority || @constrainedCategory || @constrainedCreated || @constrainedStart || @constrainedDue || @constrainedLocation || @constrainedFrequency || @constrainedDependee)
+    
+    return tasksQuery
+  end
+
   def importCSVRow row
     task = Task.new
     if row['Task']; task.title = row['Task'] end
