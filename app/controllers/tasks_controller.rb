@@ -28,40 +28,23 @@ class TasksController < ApplicationController
     @list = List.find(getCurrentListID())
     
     # Determine how to sort the tasks.
-    sort = getSortFromParams()
-    @constrainedSort = (sort != Column::NONE)
-    if sort == Column::NONE
-      sort = Column::PRIORITY # Default sort.
+    sort = getSortFieldFromParams()
+    @constrainedSort = (sort != Field::NONE)
+    if sort == Field::NONE
+      sort = Field::PRIORITY # Default sort.
     end
     sqlSort = getSQLForSort(sort)
 
+    # Build the SQL statement and query for tasks.
     tasksQuery = Task.joins('LEFT JOIN categories ON tasks.category_id = categories.id').order(sqlSort).where(list_id: @list.id).where(deleted: false).select("tasks.*, categories.title as category_title")
-
-    @showPriorityHeaders = (sort == Column::PRIORITY) && !(params[:priorityHeaders] == 'false')
-    @showCategoryHeaders = (sort == Column::PRIORITY) && !(params[:categoryHeaders] == 'false')
-
     tasksQuery = checkConstraints(tasksQuery)
-
     @tasks = tasksQuery
     
+    @showPriorityHeaders = (sort == Field::PRIORITY) && !(params[:priorityHeaders] == 'false')
+    @showCategoryHeaders = (sort == Field::PRIORITY) && !(params[:categoryHeaders] == 'false')
     @showAllColumns = params[:columns] == 'all' || @constrainedList
   end
-  
-  def edit
-    @task = Task.find(params[:id])
-  end
-  
-  def update
-    @task = Task.find(params[:id])
-    
-    if @task.update(params[:task].permit(:title, :category_id, :priority, :notes, :list_id))
-      redirect_to @task
-    else
-      edit()
-      render 'edit'
-    end
-  end
-  
+
   def destroy
     @task = Task.find(params[:id])
     @task.deleted = true
@@ -119,83 +102,66 @@ class TasksController < ApplicationController
   
   private
   def task_params
-    params.require(:task).permit(:title, :category_id, :priority, :notes, :list_id, :underway, :blocked, :start, :due, :location, :frequency, :dependee)
+    params.require(:task).permit().tap do |whitelisted|
+      # Permit fields from the database list.
+      Field.where("titleForForm is not null").each do |f|
+        whitelisted[f.titleForForm] = params[:task][f.titleForForm]
+      end
+    end
   end
   
   def checkConstraints tasksQuery
-    @constrainedPriority = false
-    if params[:priority] && params[:priority].to_i >= 0 && params[:priority].to_i <= 3
-      @constrainedPriority = true
-      tasksQuery = tasksQuery.where(priority: params[:priority].to_i)
+    @constrainedList = false
+
+    Field.all.each do |f|
+      val = params[f.name]
+      if val && f.isValid(val)
+        # Convert value to integer if appropriate.
+        if f.dataType == "integer" || f.field == Field::CATEGORY
+          val = val.to_i
+        end
+
+        # Handle any special cases while creating the WHERE clause.
+        if f.field == Field::CREATED
+          created = Time.strptime(params[:created_at], "%F")
+          tasksQuery = tasksQuery.where(created_at: (created.midnight..(created.midnight + 1.day - 1.second)))
+        elsif f.field == Field::FREQUENCY
+          tasksQuery = tasksQuery.where(frequency: val)
+        else
+          tasksQuery = tasksQuery.where(f.name => val)
+        end
+
+        if f.field == Field::CATEGORY
+          @showCategoryHeaders = false # It's unnecessary to show category headers when we are constrained to one category.
+        end
+      end
     end
 
-    @constrainedCategory = false
-    if params[:category] && params[:category].to_i >= 1
-      @constrainedCategory = true
-      tasksQuery = tasksQuery.where(category_id: params[:category].to_i)
-      @showCategoryHeaders = false # It's unnecessary to show category headers when we are constrained to one category.
-    end
-
-    @constrainedCreated = false
-    if params[:created] && !params[:created].empty?
-      @constrainedCreated = true
-      created = Time.strptime(params[:created], "%F")
-      tasksQuery = tasksQuery.where(created_at: (created.midnight..(created.midnight + 1.day - 1.second)))
-    end
-
-    @constrainedStart = false
-    if params[:start] && !params[:start].empty?
-      @constrainedStart = true
-      tasksQuery = tasksQuery.where(start: params[:start])
-    end
-
-    @constrainedDue = false
-    if params[:due] && !params[:due].empty?
-      @constrainedDue = true
-      tasksQuery = tasksQuery.where(due: params[:due])
-    end
-
-    @constrainedLocation = false
-    if params[:location] && !params[:location].empty?
-      @constrainedLocation = true
-      tasksQuery = tasksQuery.where(location: params[:location])
-    end
-
-    @constrainedFrequency = false
-    if params[:frequency] && !params[:frequency].empty?
-      @constrainedFrequency = true
-      tasksQuery = tasksQuery.where(frequency: Task.frequencies[params[:frequency]])
-    end
-
-    @constrainedDependee = false
-    if params[:dependee] && !params[:dependee].empty?
-      @constrainedDependee = true
-      tasksQuery = tasksQuery.where(dependee: params[:dependee])
-    end
-
-    @constrainedList = (@constrainedSort || @constrainedPriority || @constrainedCategory || @constrainedCreated || @constrainedStart || @constrainedDue || @constrainedLocation || @constrainedFrequency || @constrainedDependee)
-    
     return tasksQuery
   end
 
   def importCSVRow row
     task = Task.new
-    if row['Task']; task.title = row['Task'] end
-    if row['Priority']; task.priority = row['Priority'] end
-    if row['Notes']; task.notes = row['Notes'] end
-    if row['Done']; task.done = row['Done'] end
-    if row['Deleted']; task.done = row['Deleted'] end
-    if row['Created']; task.created_at = Date.parse(row['Created']) end
-    if row['Updated']; task.updated_at = Date.parse(row['Updated']) end
-    if row['Category']; task.category_id = Category.find_or_create_by(title: row['Category']).id end
-    if row['Deleted']; task.deleted = row['Deleted'] end
-    if row['Underway']; task.underway = row['Underway'] end
-    if row['Blocked']; task.blocked = row['Blocked'] end
-    if row['Start']; task.start = Date.parse(row['Start']) end
-    if row['Due']; task.due = Date.parse(row['Due']) end
-    if row['Location']; task.location = row['Location'] end
-    if row['Frequency']; task.frequency = row['Frequency'] end
-    if row['Dependee']; task.dependee = row['Dependee'] end
+
+    # Extract each field from this row.
+    Field.all.each do |f|
+      rowValue = row[f.titleForCSV]
+      if rowValue
+        dbFieldName = f.name
+        if f.dataType == "date" || f.dataType == "datetime"
+          begin
+            rowValue = Date.parse(rowValue)
+          rescue
+            next;
+          end
+        elsif f.field == Field::CATEGORY
+          rowValue = Category.find_or_create_by(title: rowValue).id
+          dbFieldName = "category_id"
+        end
+        task[dbFieldName] = rowValue
+      end
+    end
+
     task.list_id = getCurrentListID()
 
     begin
@@ -209,93 +175,28 @@ class TasksController < ApplicationController
     end
   end
 
-  def getSortFromParams
-    column = getColumnFromString(params[:sort])
-    if column == Column::STATUS
-      # Sorting by this column not supported.
-      column == Column::NONE
+  def getSortFieldFromParams
+    field = Field.getFieldFromString(params[:sort])
+    if field == Field::STATUS
+      # Sorting by this field not supported.
+      field == Field::NONE
     end
-    return column
+    return field
   end
 
-  def getColumnFromString str
-    if str
-      str = str.downcase
-    end
+  def getSQLForSort sortField
+    # Start by sorting with the field that was passed in.
+    dbField = Field.getDBFieldFromField(sortField)
+    sql = dbField.orderString
 
-    column = nil
-    if str == 'task'
-      column = Column::TASK
-    elsif str == 'category'
-      column = Column::CATEGORY
-    elsif str == 'priority'
-      column = Column::PRIORITY
-    elsif str == 'created'
-      column = Column::CREATED
-    elsif str == 'start'
-      column = Column::START
-    elsif str == 'due'
-      column = Column::DUE
-    elsif str == 'underway'
-      column = Column::UNDERWAY
-    elsif str == 'blocked'
-      column = Column::BLOCKED
-    elsif str == 'location'
-      column = Column::LOCATION
-    elsif str == 'frequency'
-      column = Column::FREQUENCY
-    elsif str == 'dependee'
-      column = Column::DEPENDEE
-    elsif str == 'status'
-      column = Column::STATUS
-    else
-      column = Column::NONE
-    end
-    return column
-  end
-
-  def getSQLForSort sort
-    sql = ''
-    if sort == Column::TASK
-      sql = 'LOWER(tasks.title), tasks.priority, LOWER(categories.title)'
-    elsif sort == Column::CATEGORY
-      sql = 'LOWER(categories.title), tasks.priority, LOWER(tasks.title)'
-    elsif sort == Column::PRIORITY
-      sql = 'tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Column::CREATED
-      sql = 'tasks.created_at DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Column::START
-      sql = 'tasks.start DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Column::DUE
-      sql = 'tasks.due DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Column::UNDERWAY
-      sql = 'tasks.underway DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Column::BLOCKED
-      sql = 'tasks.blocked DESC, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Column::LOCATION
-      sql = 'LOWER(tasks.location), tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Column::FREQUENCY
-      sql = 'tasks.frequency, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
-    elsif sort == Column::DEPENDEE
-      sql = 'tasks.dependee, tasks.priority, LOWER(categories.title), LOWER(tasks.title)'
+    # Add secondary sorts based on the sort order of the fields in the database.
+    fields = Field.order("orderSort").where("orderSort is not null")
+    fields.each do |f|
+      if f.field != sortField
+        sql += ", " + f.orderString
+      end
     end
     return sql
-  end
-
-  module Column
-    NONE = 0
-    TASK = 1
-    CATEGORY = 2
-    PRIORITY = 3
-    CREATED = 4
-    START = 5
-    DUE = 6
-    UNDERWAY = 7
-    BLOCKED = 8
-    LOCATION = 9
-    FREQUENCY = 10
-    DEPENDEE = 11
-    STATUS = 12
   end
 
   def getCurrentListID
@@ -318,16 +219,14 @@ class TasksController < ApplicationController
     end
   end
 
-  def shouldDisplayColumn columnStr
-    column = getColumnFromString(columnStr)
+  def shouldDisplayField f
     if @showAllColumns
       return true
-    elsif column == Column::TASK || column == Column::STATUS
-      # The two essential columns
+    elsif f.displayInSimpleList
       return true
     else
       return false
     end
   end
-  helper_method :shouldDisplayColumn
+  helper_method :shouldDisplayField
 end

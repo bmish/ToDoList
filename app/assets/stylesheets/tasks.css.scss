@@ -86,56 +86,56 @@ a{
 	border-bottom-width:1px;
 }
 
-.listItemCheckbox{
+.listItem-done{
 	width:26px;
 	padding-right:0px !important;
 }
 
-.listItemTitle{
+.listItem-title{
 	text-overflow:ellipsis;
 }
 
-.listItemCategory{
+.listItem-category{
 	width:100px;
 }
 
-.listItemPriority{
+.listItem-priority{
 	width:50px;
 }
 
-.listItemDateCreated{
+.listItem-created_at{
 	width:75px;
 }
 
-.listItemDateStart, .listItemDateDue{
+.listItem-start, .listItem-due{
 	width:90px;
 }
 
-.listItemUnderway{
+.listItem-underway{
 	width:75px;
 }
 
-.listItemBlocked{
+.listItem-blocked{
 	width:75px;
 }
 
-.listItemLocation{
+.listItem-location{
 	width:75px;
 }
 
-.listItemFrequency{
+.listItem-frequency{
 	width:100px;
 }
 
-.listItemDependee{
+.listItem-dependee{
 	width:75px;
 }
 
-.listItemStatus{
+.listItem-status{
 	width:100px;
 }
 
-.listItemDelete, .listItemSave{
+.listItem-deleted{
 	width:40px;
 }
 

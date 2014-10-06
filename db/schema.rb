@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140622231338) do
+ActiveRecord::Schema.define(version: 20140927034617) do
 
   create_table "categories", force: true do |t|
     t.string   "title"
@@ -20,6 +20,26 @@ ActiveRecord::Schema.define(version: 20140622231338) do
   end
 
   add_index "categories", ["title"], name: "index_categories_on_title", unique: true
+
+  create_table "fields", force: true do |t|
+    t.string   "name",                                null: false
+    t.string   "titleForDB"
+    t.string   "titleForList"
+    t.string   "titleForCSV"
+    t.string   "titleForForm"
+    t.string   "dataType"
+    t.integer  "orderDisplay"
+    t.integer  "orderSort"
+    t.boolean  "displayInSimpleList", default: false, null: false
+    t.boolean  "displayInFullList",   default: false, null: false
+    t.boolean  "isFormField",         default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "fields", ["name"], name: "index_fields_on_name", unique: true
+  add_index "fields", ["orderDisplay"], name: "index_fields_on_orderDisplay", unique: true
+  add_index "fields", ["orderSort"], name: "index_fields_on_orderSort", unique: true
 
   create_table "lists", force: true do |t|
     t.string   "title"
