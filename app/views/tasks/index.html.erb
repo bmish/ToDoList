@@ -73,12 +73,12 @@
 						<div class="listSectionItems" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>">
 				<% end %>
 
-			    <div class="listItem <%= if task.done; 'listItemTaskCompleted' end %> <%= if task.status == 'Overdue'; 'listItemTaskOverdue' end %>" id="listItem_<%= task.id %>">
+			    <div class="listItem <%= if task.done; 'listItemTaskCompleted' end %> <%= if task.status == 'Overdue'; 'listItemTaskOverdue' end %>" data-task_id="<%= task.id %>">
 
 					<% Field.where("displayInFullList='t' OR displayInSimpleList='t'").each do |f| %>
 					<% if shouldDisplayField(f) %>
 
-						<div id="<%= f.name %>_<%= task.id %>" class="listItemColumn listItem-<%= f.name %> <%= if task.done; 'taskCompleted' end %>">
+						<div data-task_id="<%= task.id %>" class="listItemColumn listItem-<%= f.name %> <%= if task.done; 'taskCompleted' end %>">
 							<% if f.field == Field::DONE %>
 								<%= check_box("completed", task.id, {checked: task.done, class: 'taskCheckbox', :data => {:remote => true, :url => url_for(:action => 'complete', :id => task.id), :id => task.id, :method => :put}}) %>
 							<% elsif f.field == Field::TITLE %>

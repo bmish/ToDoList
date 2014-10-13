@@ -6,37 +6,15 @@ jQuery ->
 	taskCheckboxOnChange = (event) ->
 		taskID = $(event.target).data('id')
 		if event.target.checked
-			$('#listItem_'+taskID).addClass('listItemTaskCompleted')
-			$('#title_'+taskID).addClass('taskCompleted')
-			$('#category_'+taskID).addClass('taskCompleted')
-			$('#priority_'+taskID).addClass('taskCompleted')
-			$('#created_at_'+taskID).addClass('taskCompleted')
-			$('#start_'+taskID).addClass('taskCompleted')
-			$('#due_'+taskID).addClass('taskCompleted')
-			$('#underway_'+taskID).addClass('taskCompleted')
-			$('#blocked_'+taskID).addClass('taskCompleted')
-			$('#location_'+taskID).addClass('taskCompleted')
-			$('#frequency_'+taskID).addClass('taskCompleted')
-			$('#dependee_'+taskID).addClass('taskCompleted')
-			$('#status_'+taskID).addClass('taskCompleted')
+			$('.listItem[data-task_id='+taskID+']').addClass('listItemTaskCompleted')
+			$('.listItemColumn[data-task_id='+taskID+']').addClass('taskCompleted')
 		else
-			$('#listItem_'+taskID).removeClass('listItemTaskCompleted')
-			$('#title_'+taskID).removeClass('taskCompleted')
-			$('#category_'+taskID).removeClass('taskCompleted')
-			$('#priority_'+taskID).removeClass('taskCompleted')
-			$('#created_at_'+taskID).removeClass('taskCompleted')
-			$('#start_'+taskID).removeClass('taskCompleted')
-			$('#due_'+taskID).removeClass('taskCompleted')
-			$('#underway_'+taskID).removeClass('taskCompleted')
-			$('#blocked_'+taskID).removeClass('taskCompleted')
-			$('#location_'+taskID).removeClass('taskCompleted')
-			$('#frequency_'+taskID).removeClass('taskCompleted')
-			$('#dependee_'+taskID).removeClass('taskCompleted')
-			$('#status_'+taskID).removeClass('taskCompleted')
+			$('.listItem[data-task_id='+taskID+']').removeClass('listItemTaskCompleted')
+			$('.listItemColumn[data-task_id='+taskID+']').removeClass('taskCompleted')
 
 	taskDeleteOnAJAXComplete = (event) ->
 		taskID = $(event.target).data('id')
-		$('#listItem_'+taskID).remove()
+		$('.listItem[data-task_id='+taskID+']').remove()
 		removeEmptyListSections()
 
 	listTitleHeaderNewLinkOnAJAXComplete = (e, data, status) ->
