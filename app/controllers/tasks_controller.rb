@@ -83,7 +83,7 @@ class TasksController < ApplicationController
       csv_text = File.read(file_data.path)
     else
       csv_text = nil
-      logger.error "Bad file_data: #{file_data.class.name}: #{file_data.inspect}"
+      logger.error "Unable to read text from uploaded file."
     end
 
     # Add tasks to database.
@@ -95,6 +95,8 @@ class TasksController < ApplicationController
       csv.each do |row|
         importCSVRow row
       end
+    else
+      logger.error "Unable to read text from uploaded file."
     end
     
     redirect_to tasks_path, flash: {importCountSucceeded: @importCountSucceeded, importCountFailed: @importCountFailed}
@@ -152,6 +154,7 @@ class TasksController < ApplicationController
           begin
             rowValue = Date.parse(rowValue)
           rescue
+            logger.error "Couldn't parse a date while importing CSV."
             next;
           end
         elsif f.field == Field::CATEGORY
@@ -208,6 +211,8 @@ class TasksController < ApplicationController
       list = List.new({title: 'First List'})
       if list.save
         cookies['list_id'] = list.id
+      else
+        logger.error "Couldn't save new default list to database."
       end
     else
       begin
