@@ -46,79 +46,13 @@
 						--><% end %><!--
 					--></div><!--
 					--><% end %><!--
-					--><% end %>
+				--><% end %>
 
 			</div>
 			<% end %>
 
-			<% prevTask = nil %>
-		    <% @tasks.each do |task| %>
-
-				<% beginNewSectionPriority = @showPriorityHeaders && (!prevTask || (prevTask.priority != task.priority)) %>
-				<% beginNewSectionCategory = @showCategoryHeaders && (!prevTask || (prevTask.priority != task.priority) || (prevTask.category_id != task.category_id)) %>
-				<% if beginNewSectionCategory && prevTask # End previous category section %>
-					</div></div>
-				<% end %>
-				<% if beginNewSectionPriority %>
-					<% if prevTask # End previous priority section %>
-						</div></div>
-					<% end %>
-					<div class="listSectionPriority" data-priority="<%= task.priority %>">
-						<div class="listSectionHeader listSectionHeaderPriority" data-priority="<%= task.priority %>">P<%= task.priority %></div>
-						<div class="listSectionItems" data-priority="<%= task.priority %>">
-				<% end %>
-				<% if beginNewSectionCategory %>
-					<div class="listSectionCategory" data-category_id="<%= task.category_id %>">
-						<div class="listSectionHeader listSectionHeaderCategory" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>"><%= task.category_title ? task.category_title : '[no category]' %></div>
-						<div class="listSectionItems" data-priority="<%= task.priority %>" data-category_id="<%= task.category_id %>">
-				<% end %>
-
-			    <div class="listItem <%= if task.done; 'listItemTaskCompleted' end %> <%= if task.status == 'Overdue'; 'listItemTaskOverdue' end %>" data-task_id="<%= task.id %>">
-
-					<% Field.where("displayInFullList='t' OR displayInSimpleList='t'").each do |f| %>
-					<% if shouldDisplayField(f) %>
-
-						<div data-task_id="<%= task.id %>" class="listItemColumn listItem-<%= f.name %> <%= if task.done; 'taskCompleted' end %>">
-							<% if f.field == Field::DONE %>
-								<%= check_box("completed", task.id, {checked: task.done, class: 'taskCheckbox', :data => {:remote => true, :url => url_for(:action => 'complete', :id => task.id), :id => task.id, :method => :put}}) %>
-							<% elsif f.field == Field::TITLE %>
-								<%= task[f.name] %>
-							<% elsif f.field == Field::CATEGORY %>
-								<% if task.category_title %>
-									<%= link_to(task.category_title, tasks_path(category: task.category_id)) %>
-								<% end %>
-							<% elsif f.field == Field::PRIORITY || f.field == Field::LOCATION || f.field == Field::DEPENDEE %>
-								<% if task[f.name] %>
-									<%= link_to(task[f.name], tasks_path(f.name => task[f.name])) %>
-								<% end %>
-							<% elsif f.field == Field::FREQUENCY %>
-								<% if task[f.name] %>
-									<%= link_to(task.frequency, tasks_path(f.name => task[f.name])) %>
-								<% end %>
-							<% elsif f.field == Field::STATUS %>
-								<%= task.status %>
-							<% elsif f.field == Field::DELETED %>
-								<%= link_to 'X', task_path(task), method: :delete, data: {confirm: 'Are you sure?', :id => task.id}, remote: true, class: 'taskDelete' %>
-							<% elsif f.dataType == "boolean" %>
-								<%= task[f.name] ? 'Yes' : '' %>
-							<% elsif f.dataType == "datetime" %>
-								<% if task[f.name] %>
-									<time datetime="<%= task[f.name].strftime("%FT%T%:z") %>"><%= link_to(task[f.name].strftime("%-m/%-d"), tasks_path(f.name => task[f.name].strftime("%F"))) %></time>
-								<% end %>
-							<% elsif f.dataType == "date" %>
-								<% if task[f.name] %>
-									<time datetime="<%= task[f.name].strftime("%F") %>"><%= link_to(task[f.name].strftime("%-m/%-d"), tasks_path(f.name => task[f.name].strftime("%F"))) %></time>
-								<% end %>
-							<% end %>
-						</div>
-
-					<% end %>
-					<% end %>
-
-				</div>
-
-				<% prevTask = task %>
-		    <% end %>
+			<% @prevTask = nil %>
+			<%= render @tasks %>
 
 			<% if @showCategoryHeaders && !@tasks.empty? %>
 				</div></div>
